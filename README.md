@@ -5,6 +5,7 @@
 ![Foco](https://img.shields.io/badge/Foco-Product_Management_|_AI_Builder-ff69b4)
 
 > **Um projeto desenvolvido por Ricardo Lima. *
+
 > 🎬 **[Clique aqui para assistir à Apresentação e Demonstração do Produto em 90s](COLE_O_LINK_DO_SEU_VIDEO_AQUI)**
 
 ## 🎯 O Problema (Dor Real do Cliente B2B)
