@@ -4,7 +4,7 @@
 ![Stack](https://img.shields.io/badge/Stack-HTML5_|_CSS3_|_JavaScript_ES6+-f3df49)
 ![Foco](https://img.shields.io/badge/Foco-Product_Management_|_AI_Builder-ff69b4)
 
-> **Um projeto desenvolvido por Ricardo Lima.**
+> **Um projeto desenvolvido por Ricardo Lima. *
 
 ## 🎯 O Problema (Dor Real do Cliente B2B)
 Durante minha experiência em operações B2B na **Sodexo (unidade Ultragaz)**, identifiquei um gargalo financeiro e operacional crítico: o fechamento mensal de faturamento do refeitório (auditado via catracas físicas *Control iD*) era feito através de planilhas manuais. 
@@ -32,7 +32,7 @@ A escolha arquitetural por Ingestão de Arquivo em vez de Webhooks em tempo real
 
 ## 🛠️ Como Testar (Deploy)
 Acesse a aplicação rodando ao vivo, sem precisar instalar nada:
-🔗 **[Inserir seu link da Vercel aqui, ex: https://refeitorio-b2b.vercel.app]**
+🔗 **https://github.com/gestaointeligente-ia/refeitorio.git**
 
 *Para avaliar o projeto:*
 1. Acesse o link acima.
@@ -41,5 +41,5 @@ Acesse a aplicação rodando ao vivo, sem precisar instalar nada:
 
 ## 🧑‍💻 Autor
 **Ricardo Silva Lima**
-- [LinkedIn](INSERIR_LINK_AQUI)
+- [LinkedIn](https://www.linkedin.com/in/ricardo-lima-a29240225/)
 - Focado em automação, eficiência B2B e democratização do impacto social através da tecnologia.
