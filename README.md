@@ -17,8 +17,8 @@ Isso gerava:
 ## 🚀 A Solução
 O **Refeitório Inteligente** é um SaaS web *offline-first* (baseado em processamento em lote/CSV) que atua como um **Firewall de Auditoria**. Ele ingere os logs brutos da catraca, higieniza os dados com regras de negócio complexas e emite laudos invioláveis.
 
-### 💡 Por que via CSV (Batch) e não em Tempo Real (API)?
-A escolha arquitetural por Ingestão de Arquivo em vez de Webhooks em tempo real foi **estratégica** focando na resiliência de ambientes industriais (OT vs. IT):
+### 💡 Por que via CSV e não em Tempo Real (API)?
+A escolha arquitetural por Ingestão de Arquivo em vez de Webhooks em tempo real foi **estratégica** focando na resiliência de ambientes industriais:
 1. **Segurança (Air-Gap):** Catracas de polos petroquímicos operam em redes isoladas (VLAN) por normas rígidas de segurança cibernética e patrimonial.
 2. **Resiliência:** Se a internet oscilar às 12h00, a catraca não pode travar a fila aguardando resposta da nuvem.
 3. **Idempotência & Curadoria:** O processamento em lote permite simular regras de tolerância (`-15m / +15m`) e gerar relatórios de duplicidades antes de efetivar a cobrança financeira (Evitando *Rollbacks* complexos).
