@@ -44,17 +44,15 @@ Acesse a aplicação rodando ao vivo, sem precisar instalar nada:
 2. Clique no botão vermelho **"Sandbox Avaliador iFood"** na tela inicial (não exige senha).
 3. Navegue pelo Dashboard, explore o modo *Spotlight* no gráfico e teste as exportações em PDF/Excel.
 
-## 🧑‍💻 Autor
-**Ricardo Silva Lima**
+## 👨‍💻 Autor
 
-Gestão de Processos & Conformidade B2B | Otimização Operacional | Graduando em Administração
+**Ricardo Silva Lima**  
+*Gestão de Processos & Conformidade B2B | Otimização Operacional | Graduando em Administração*  
 
-📍 Candeias, Bahia, Brasil  
+📍 Salvador, Bahia, Brasil  
 
-📧 ricardosilvax86@gmail.com
+> *"Focado em automação, eficiência B2B e democratização do impacto social através da tecnologia."*
 
-📱 (71) 98603-0162
-
-- [LinkedIn](https://www.linkedin.com/in/ricardo-lima-a29240225/)
-  
-- Focado em automação, eficiência B2B e democratização do impacto social através da tecnologia.
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](SEU_LINK_DO_LINKEDIN_AQUI)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:ricardosilvax86@gmail.com)
+[![WhatsApp](https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://wa.me/5571986030162)
