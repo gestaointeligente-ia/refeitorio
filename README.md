@@ -56,6 +56,6 @@ Acesse a aplicação rodando ao vivo, sem precisar instalar nada:
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ricardo-lima-a29240225/)
 [![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:ricardosilvax86@gmail.com)
 [![WhatsApp](https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://wa.me/5571986030162)
-<a href="LINK_DO_SEU_PDF" target="_blank" download="Curriculo_Ricardo_Lima.pdf">
+<a href="refeitorio/currículo_Ricardo_Lima-rev10.pdf" target="_blank" download="Curriculo_Ricardo_Lima.pdf">
   <img src="https://img.shields.io/badge/CURR%C3%8DCULO-PDF-FF0055?style=for-the-badge&logo=adobe-acrobat-reader&logoColor=white&labelColor=2B2B2B" alt="Baixar Currículo" />
 </a>
