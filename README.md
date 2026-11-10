@@ -4,7 +4,7 @@
 ![Stack](https://img.shields.io/badge/Stack-HTML5_|_CSS3_|_JavaScript_ES6+-f3df49)
 ![Foco](https://img.shields.io/badge/Foco-Product_Management_|_AI_Builder-ff69b4)
 
-> **Um projeto desenvolvido por Ricardo Lima. De uma dor real no chão de fábrica em Mataripe-BA para um SaaS B2B Full-Cloud de nível Enterprise.**
+> **Um projeto desenvolvido por Ricardo Lima. De uma dor real em Mataripe-BA para um SaaS B2B Full-Cloud de nível Enterprise.**
 
 > 🎬 **[Clique aqui para assistir à Apresentação e Demonstração do Produto em 90s](COLE_O_LINK_DO_SEU_VIDEO_AQUI)**
 
