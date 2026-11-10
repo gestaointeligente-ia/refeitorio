@@ -48,6 +48,7 @@ Acesse a aplicação rodando ao vivo, sem precisar instalar nada:
 **Ricardo Silva Lima**
 
 Gestão de Processos & Conformidade B2B | Otimização Operacional | Graduando em Administração
+
 📍 Candeias, Bahia, Brasil  
 
 📧 ricardosilvax86@gmail.com
@@ -55,5 +56,5 @@ Gestão de Processos & Conformidade B2B | Otimização Operacional | Graduando e
 📱 (71) 98603-0162
 
 - [LinkedIn](https://www.linkedin.com/in/ricardo-lima-a29240225/)
-- 
+  
 - Focado em automação, eficiência B2B e democratização do impacto social através da tecnologia.
