@@ -21,9 +21,9 @@ O **Refeitório Inteligente** é um SaaS web *offline-first* (baseado em process
 
 ### 💡 Por que via CSV e não em Tempo Real (API)?
 A escolha arquitetural por Ingestão de Arquivo em vez de Webhooks em tempo real foi **estratégica** focando na resiliência de ambientes industriais:
-1. **Segurança (Air-Gap):** Catracas de polos petroquímicos operam em redes isoladas (VLAN) por normas rígidas de segurança cibernética e patrimonial.
-2. **Resiliência:** Se a internet oscilar às 12h00, a catraca não pode travar a fila aguardando resposta da nuvem.
-3. **Idempotência & Curadoria:** O processamento em lote permite simular regras de tolerância (`-15m / +15m`) e gerar relatórios de duplicidades antes de efetivar a cobrança financeira (Evitando *Rollbacks* complexos).
+1. Catracas de polos petroquímicos operam em redes isoladas (VLAN) por normas rígidas de segurança cibernética e patrimonial.
+2. Se a internet oscilar às 12h00, a catraca não pode travar a fila aguardando resposta da nuvem.
+3. O processamento em lote permite simular regras de tolerância (`-15m / +15m`) e gerar relatórios de duplicidades antes de efetivar a cobrança financeira (Evitando *Rollbacks* complexos).
 
 ## ✨ Funcionalidades Principais (Core Features)
 - **Fast-Track Sandbox (1-Click):** Botão injetado para recrutadores/avaliadores carregarem uma massa de dados fictícia em 1 segundo e testarem a plataforma sem precisarem buscar arquivos locais.
