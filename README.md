@@ -57,5 +57,5 @@ Acesse a aplicação rodando ao vivo, sem precisar instalar nada:
 [![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:ricardosilvax86@gmail.com)
 [![WhatsApp](https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://wa.me/5571986030162)
   <a href="https://raw.githubusercontent.com/gestaointeligente-ia/refeitorio/main/curr%C3%ADculo_Ricardo_Lima-rev10" download="Curriculo_Ricardo_Lima.pdf" target="_blank">
-    <img src="https://img.shields.io/badge/CURR%C3%8DCULO-BAIXAR_PDF-FFD700?style=for-the-badge&logo=adobe-acrobat-reader&logoColor=black&labelColor=FFA500" alt="Baixar Currículo" />
-  </a>
+  <img src="https://img.shields.io/badge/CURR%C3%8DCULO-PDF-E63946?style=for-the-badge&logo=adobe-acrobat-reader&logoColor=white&labelColor=343A40" alt="Descarregar Currículo" />
+</a>
