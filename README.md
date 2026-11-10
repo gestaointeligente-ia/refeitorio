@@ -1,4 +1,4 @@
-# 🍽️ Refeitório Inteligente B2B | Sandbox Operacional
+# 🍽️ Refeitório Inteligente B2B | Auditoria e Fluxo de Refeições
 
 ![Status](https://img.shields.io/badge/Status-Concluído_|_Pronto_para_Auditoria-success)
 ![Stack](https://img.shields.io/badge/Stack-HTML5_|_CSS3_|_JavaScript_ES6+-f3df49)
