@@ -9,7 +9,7 @@
 > 🎬 **[Clique aqui para assistir à Apresentação e Demonstração do Produto em 90s](COLE_O_LINK_DO_SEU_VIDEO_AQUI)**
 
 ## 🎯 O Problema (Dor Real do Cliente B2B)
-Durante minha experiência em operações B2B na **Sodexo (unidade Ultragaz)**, identifiquei um gargalo financeiro e operacional crítico: o fechamento mensal de faturamento do refeitório (auditado via catracas físicas *Control iD*) era feito através de planilhas manuais. 
+Durante minha experiência em operações B2B na **Sodexo (Operação Ultragaz)**, identifiquei um gargalo financeiro e operacional crítico: o fechamento mensal de faturamento do refeitório (auditado via catracas físicas *Control iD*) era feito através de planilhas manuais. 
 
 Isso gerava:
 - **Glosas financeiras** devido a batidas duplicadas (reflexo de leitor ou erro humano).
