@@ -45,7 +45,10 @@ Além disso, contamos com:
 Acesse a aplicação rodando ao vivo, sem precisar instalar nada:
 
 
-<a href="https://gestaointeligente-ia.github.io/refeitorio/" target="_blank">[![Live Demo](https://img.shields.io/badge/🚀_ACESSAR_SISTEMA_AO_VIVO-Sandbox_1--Click_iFood-EA1D2C?style=for-the-badge)](https://gestaointeligente-ia.github.io/refeitorio/)</a>
+
+<a href="https://gestaointeligente-ia.github.io/refeitorio/" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/badge/🚀_ACESSAR_SISTEMA_AO_VIVO-Sandbox_1--Click_iFood-EA1D2C?style=for-the-badge" alt="Acessar Sistema ao Vivo">
+</a>
 
 *Para avaliar o projeto, o sistema conta com um Fast-Track VIP na tela de login:* 
 1. Acesse o link acima.
