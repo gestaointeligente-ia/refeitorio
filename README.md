@@ -28,11 +28,16 @@ A escolha arquitetural por Ingestão de Arquivo em vez de Webhooks em tempo real
 3. O processamento em lote permite simular regras de tolerância (`-15m / +15m`) e gerar relatórios de duplicidades antes de efetivar a cobrança financeira (Evitando *Rollbacks* complexos).
 
 ## ✨ Funcionalidades Principais (Core Features)
-- **Fast-Track Sandbox (1-Click):** Botão injetado para recrutadores/avaliadores carregarem uma massa de dados fictícia em 1 segundo e testarem a plataforma sem precisarem buscar arquivos locais.
-- **Motor de Regras SLA:** Aplicação dinâmica de tolerâncias de horário (Antes/Depois) e isolamento de batidas atípicas ("Fora de Faixa").
-- **Proteção Contra Duplicidade (Anti-Glosa):** Algoritmo que detecta e neutraliza marcações do mesmo funcionário com $\Delta \le 60$ segundos.
-- **Modo Spotlight (Visão de Rampa):** Gráfico de calor analítico que identifica os horários de maior gargalo na fila, minuto a minuto. Isola visualmente a curva de tráfego, os KPIs de topo e o parecer da IA para uma única empresa parceira com 1 clique.
-- **Exportação Criptográfica:** Geração de Fatura PDF com validação hash `SHA-256`, garantindo compliance e rastreabilidade para o cliente final.
+
+| Módulo | Entrega de Produto & Regra de Negócio | Impacto B2B |
+| :--- | :--- | :--- |
+| **🛡️ Firewall de Idempotência (Control iD)** | Filtra batidas repetidas do mesmo colaborador no mesmo turno e diagnostica o delta: $\Delta \le 60\text{s}$ = **Reflexo de Catraca** vs. $\Delta > 60\text{s}$ = **Alerta de Repasse de Crachá**. | Elimina 100% das cobranças em duplicidade e quantifica a **Glosa Evitada (R$)** no PDF. |
+| **⚙️ Motor de Precificação 4XL & Tolerância SLA** | Configuração em nuvem de tarifas (*Ultragaz* vs. *Parceiros*, *Dias Normais* vs. *Aniversariantes*), Data Festiva automática (último dia útil) e botões de tolerância (`0 min`, `-15 min`, `+15 min`). | **Tarifação Proporcional por Proximidade:** Acessos fora de janela geram alerta de *Atípico*, mas são cobrados pelo turno contratual mais próximo. |
+| **📈 Modo Spotlight & Forecast AI** | Gráfico de calor analítico que identifica os horários de maior gargalo na fila, minuto a minuto, com recomendação de escalonamento de rampa. Isola visualmente a curva de tráfego, os KPIs de topo e o parecer da IA para uma única empresa parceira com 1 clique. | Previsibilidade de caixa para o gestor e redução de filas físicas no refeitório. |
+| **📑 Exportação Tripla & Cofre SHA-256** | Geração de Boletim PDF com paginação dinâmica anti-corte, Lote `.ZIP` individual por empresa, Excel `.XLSX` com 3 abas executivas e Cofre de Faturas com hash SHA-256,  | Rastreabilidade jurídica e contábil ponta a ponta entre Sodexo, Ultragaz e terceirizadas. |
+| **🤝 Gestão de Contratos B2B & Documentos** | Controle de vigência contratual (*Ativos*, *Vence em 30d*, *Vencidos*), preview nativo de múltiplos PDFs em Base64 e repositório de *Compliance Legal (NR-20 / ISO 22000)*. | Centralização de governança legal e operacional em uma única interface. |
+
+Além disso, contamos com:
 - **Zero Descarte Financeiro:** Acessos fora da janela de SLA recebem flag de auditoria (`⚠️ Fora do Horário`), mas são tarifados proporcionalmente pela faixa horária correspondente (Manhã/Desjejum, Almoço, Tarde/Lanche, Noite/Jantar) de acordo com o contrato da empresa e o calendário do dia (Normal vs. Evento).
 - **Cálculo de Ticket Médio Ponderado:** Simulador instantâneo baseado na matriz operacional de $22\text{ dias úteis}$ ($21\text{d Normais} + 1\text{d Evento}$) com pesos de $50\%$ Almoço, $25\%$ Desjejum, $15\%$ Lanche e $10\%$ Jantar.
 
