@@ -1,0 +1,1357 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+:root {
+    --bg-deep: #050505;
+    --bg-glass: rgba(20, 25, 35, 0.45);
+    --border-glass: rgba(255, 255, 255, 0.08);
+    --border-glass-light: rgba(255, 255, 255, 0.15);
+    
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    
+    --neon-purple: #a855f7;
+    --neon-blue: #3b82f6;
+    --neon-green: #10b981;
+    --neon-red: #ef4444;
+    --neon-yellow: #f59e0b;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+body {
+    background-color: var(--bg-deep);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ==============================================================
+   MATA-BORDA GLOBAL (Remove o outline feio do navegador ao clicar)
+   ============================================================== */
+button:focus, a:focus, input:focus, select:focus, textarea:focus, div:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+button:focus-visible {
+    outline: none !important;
+}
+
+/* EFEITO FLUIDO NO FUNDO (O GRANDE WOW) */
+.fluid-bg {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: -1;
+    opacity: 0.3;
+    animation: float 12s infinite alternate ease-in-out;
+}
+.fluid-purple { background: var(--neon-purple); width: 450px; height: 450px; top: -100px; left: -100px; }
+.fluid-blue { background: var(--neon-blue); width: 350px; height: 350px; bottom: -50px; right: -50px; animation-delay: -5s; }
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(50px, 50px) scale(1.1); }
+}
+
+/* Layout Core */
+.app-container { display: flex; min-height: 100vh; position: relative; z-index: 1; }
+
+/* Vidro (Glassmorphism Otimizado 120 FPS) */
+.glass-panel {
+    background: rgba(12, 16, 26, 0.96);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid var(--border-glass);
+}
+
+.glass-card {
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glass);
+    border-top: 1px solid var(--border-glass-light); /* Luz vindo de cima */
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efeito Flutuante Sutil ("só um tico") com Brilho Neon */
+.glow-hover {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative; 
+    z-index: 1; /* Garante que é a base */
+}
+
+.glow-hover:hover {
+    transform: translateY(-2px) !important; /* Move sem usar o scale que cortava a borda */
+    border-color: rgba(59, 130, 246, 0.5) !important;
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2) !important;
+    z-index: 10 !important; /* Pula pra frente da tela, impossível de ser cortado */
+}
+
+.glow-hover-red:hover {
+    transform: translateY(-2px) !important;
+    border-color: rgba(239, 68, 68, 0.5) !important;
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.2) !important;
+    z-index: 10 !important;
+}
+
+.glow-hover-yellow:hover {
+    transform: translateY(-2px) !important;
+    border-color: rgba(245, 158, 11, 0.5) !important;
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2) !important;
+    z-index: 10 !important;
+}
+
+/* Sidebar */
+.sidebar { width: 260px; padding: 25px 0; border-right: 1px solid var(--border-glass); display: flex; flex-direction: column; }
+.user-profile { display: flex; align-items: center; gap: 15px; padding: 0 25px 30px; border-bottom: 1px solid var(--border-glass); margin-bottom: 25px; }
+.glow-avatar { width: 45px; height: 45px; background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; border: 2px solid var(--bg-deep); box-shadow: 0 0 15px rgba(168, 85, 247, 0.5); }
+.user-info h3 { font-size: 15px; font-weight: 600; }
+.text-neon-blue { color: var(--neon-blue); font-size: 10px; font-weight: 800; letter-spacing: 1px; }
+
+.menu-section { margin-bottom: 30px; }
+.menu-label { font-size: 10px; color: var(--text-muted); padding: 0 25px; margin-bottom: 15px; font-weight: 800; letter-spacing: 1px; }
+.menu-item { display: flex; align-items: center; gap: 12px; padding: 12px 25px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; transition: 0.3s; border-left: 3px solid transparent; }
+.menu-item:hover { color: var(--text-main); background: rgba(255,255,255,0.03); }
+.menu-item.active { color: var(--text-main); background: linear-gradient(90deg, rgba(168, 85, 247, 0.1) 0%, transparent 100%); border-left-color: var(--neon-purple); text-shadow: 0 0 10px rgba(168,85,247,0.5); }
+.badge-novo { background: rgba(59, 130, 246, 0.2); color: var(--neon-blue); font-size: 9px; padding: 3px 6px; border-radius: 4px; font-weight: 800; margin-left: auto; border: 1px solid rgba(59, 130, 246, 0.3); }
+
+/* Main Content */
+.main-content { flex: 1; padding: 30px 40px; overflow-y: auto; }
+
+/* Hero Compacto */
+.hero-premium { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
+@keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2); opacity: 0; } }
+
+.hero-premium h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; }
+.text-gradient { background: linear-gradient(90deg, var(--neon-purple), #ec4899); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.hero-premium p { color: var(--text-muted); font-size: 15px; font-weight: 300; }
+
+/* Grids */
+.glow-hover-blue:hover { transform: translateY(-5px); border-color: rgba(59, 130, 246, 0.4); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15); }
+
+/* Tipografia de Dados */
+.card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+.card-header h3 { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;}
+.glass-card h2 { font-size: 42px; font-weight: 800; letter-spacing: -1px; line-height: 1; }
+
+/* Cores de Texto Neon */
+.text-neon-purple { color: var(--neon-purple); }
+.text-neon-green { color: var(--neon-green); }
+.text-red { color: var(--neon-red); }
+.text-yellow { color: var(--neon-yellow); }
+.text-gradient-icon { background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* Cards Específicos */
+.destaque-card { background: linear-gradient(180deg, rgba(168,85,247,0.1) 0%, rgba(20,25,35,0.4) 100%); border-color: rgba(168,85,247,0.3); }
+.text-shadow { text-shadow: 0 0 20px rgba(168,85,247,0.4); }
+.micro-text { font-size: 12px; color: var(--text-muted); margin-top: 10px; }
+
+
+/* Financeiro */
+.finance-total { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; font-size: 15px; font-weight: 800; color: var(--text-muted); }
+.glow-text { font-size: 22px; text-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+
+
+.btn-premium { background: linear-gradient(135deg, var(--neon-purple) 0%, var(--neon-blue) 100%); border: 1px solid rgba(255, 255, 255, 0.12); color: white; font-weight: 800; font-size: 12px; letter-spacing: 1px; padding: 12px 24px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15); transition: all 0.2s ease; }
+.btn-premium:hover { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.25); transform: translateY(-1px); filter: brightness(1.08); }
+
+
+/*  CORREÇÃO ANTI-GLITCH: HITBOX INVISÍVEL PARA O HOVER LOOP */
+.glow-hover, .glow-hover-red, .glow-hover-yellow, .glow-hover-blue {
+    position: relative; /* Garante que a área invisível fique presa ao elemento */
+}
+
+/* Cria uma extensão de 10px para baixo que acompanha o elemento quando ele sobe */
+.glow-hover::after, .glow-hover-red::after, .glow-hover-yellow::after, .glow-hover-blue::after {
+    content: '';
+    position: absolute;
+    bottom: -10px; 
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background: transparent;
+    z-index: 1;
+}
+
+
+
+/* =========================================
+   GAVETA DE CONFIGURAÇÕES (SIDE DRAWER)
+   ========================================= */
+.overlay-hidden {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(5, 5, 5, 0.7); backdrop-filter: blur(5px);
+    z-index: 998; opacity: 0; pointer-events: none; transition: 0.4s ease;
+}
+.overlay-active { opacity: 1; pointer-events: all; }
+
+
+.settings-drawer {
+    position: fixed;
+    top: 0;
+    right: -550px;
+    width: 500px;
+    height: 100vh;
+    background: rgba(15, 20, 30, 0.96);
+    z-index: 100000 !important;
+    border-left: 1px solid var(--border-glass-light);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    transition: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drawer-active { right: 0 !important; }
+
+.drawer-header {
+    padding: 30px; border-bottom: 1px solid var(--border-glass);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.drawer-header h2 { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+.btn-close { background: transparent; border: none; color: var(--text-muted); cursor: pointer; transition: 0.3s; }
+.btn-close:hover { color: var(--neon-red); transform: rotate(90deg); }
+
+.drawer-content { padding: 30px; flex: 1; overflow-y: auto; }
+
+/* ==============================================================
+   INPUTS PREMIUM (COM ANTI-LAG, GPU E SELECT CUSTOMIZADO)
+   ============================================================== */
+.premium-input {
+    width: 100%; 
+    /* Aceleração de GPU e Anti-Lag unificados */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: rgba(10, 15, 25, 0.95) !important;
+    border: 1px solid var(--border-glass);
+    color: var(--text-main); 
+    font-size: 18px; 
+    font-weight: 800;
+    padding: 15px; 
+    border-radius: 8px; 
+    transition: 0.3s;
+    transform: translateZ(0);
+}
+
+/* Customização do Select (Remove a seta feia do Windows) */
+select.premium-input {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%233b82f6%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px top 50%;
+    background-size: 10px auto;
+    padding-right: 40px;
+}
+
+.premium-input:focus { 
+    outline: none; 
+    border-color: var(--neon-blue); 
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); 
+}
+
+.drawer-footer { padding: 30px; border-top: 1px solid var(--border-glass); background: rgba(0,0,0,0.2); }
+
+/* =========================================
+   VELOCÍMETRO LOGÍSTICO (GARGALO)
+   ========================================= */
+.speedometer-badge {
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    color: var(--neon-purple);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    align-items: center;
+    gap: 6px;
+    animation: pulse-border 2s infinite;
+}
+@keyframes pulse-border {
+    0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(168, 85, 247, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
+}
+
+/* =========================================
+   MODO TV (COMMAND CENTER)
+   ========================================= */
+body.tv-mode .sidebar { display: none !important; }
+body.tv-mode .main-content { padding: 40px 60px; }
+body.tv-mode .glass-card h2 { font-size: 64px; } /* Números gigantes */
+body.tv-mode .hero-premium h1 { font-size: 42px; }
+body.tv-mode .topbar { background: rgba(0,0,0,0.8); border-bottom: 2px solid var(--neon-blue); }
+body.tv-mode .fluid-bg { animation-duration: 4s; opacity: 0.6; } /* Fundo agitado */
+body.tv-mode .acoes-grid { display: none; } /* Esconde o upload na TV */
+
+.price-grid-title { font-size: 11px; color: var(--neon-blue); font-weight: 800; text-transform: uppercase; margin: 15px 0 10px 0; letter-spacing: 1px; }
+
+/* MODO IMPRESSÃO PDF */
+@media print {
+    .fluid-bg, .sidebar, .hero-premium, .acoes-grid { display: none !important; }
+    body, .app-container { background: white !important; color: black; min-height: auto; }
+    .glass-card { background: white !important; border: 1px solid #ccc; box-shadow: none !important; page-break-inside: avoid; }
+    h1, h2, h3, p, span, strong { color: black !important; text-shadow: none !important; }
+    .main-content { padding: 0; }
+}
+
+/* =========================================
+   COMMAND CENTER 4XL (MOTOR DE PRECIFICAÇÃO)
+   ========================================= */
+#painel-config.central-modal-4xl {
+    position: fixed;
+    top: 46%;
+    left: 50%;
+    transform: translate(-50%, -46%) scale(0.95);
+    width: 92vw;
+    max-width: 1100px;
+    height: fit-content !important;
+    max-height: 92vh !important;
+    background: linear-gradient(165deg, rgba(14, 19, 32, 0.98) 0%, rgba(8, 11, 19, 0.99) 100%);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(99, 102, 241, 0.38) !important;
+    border-top: 1px solid rgba(168, 85, 247, 0.55) !important;
+    border-radius: 24px;
+    box-shadow: 0 25px 70px rgba(0,0,0,0.92), 0 0 40px rgba(59, 130, 246, 0.16), inset 0 1px 0 rgba(255,255,255,0.12);
+    z-index: 100000 !important;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    right: auto;
+}
+
+/* ==============================================================
+   ANULAÇÃO DO SELETOR NATIVO DE HORÁRIOS (TIME PICKER VIP)
+   ============================================================== */
+input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none !important;
+    -webkit-appearance: none !important;
+    background: transparent !important;
+    margin: 0 !important;
+}
+
+/* Quando ativado pelo JavaScript, ele surge e expande */
+#painel-config.central-modal-4xl.drawer-active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translate(-50%, -46%) scale(1);
+}
+
+
+/* ==========================================
+   TOAST NOTIFICATIONS (Notificações Modernas)
+   ========================================== */
+.toast-msg {
+    min-width: 300px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: rgba(10, 15, 25, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateX(120%);
+    opacity: 0;
+    animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    pointer-events: all;
+    border-left: 4px solid transparent;
+}
+
+.toast-msg.success { border: 1px solid rgba(16, 185, 129, 0.3); border-left: 4px solid var(--neon-green); }
+.toast-msg.error { border: 1px solid rgba(239, 68, 68, 0.3); border-left: 4px solid #ef4444; }
+.toast-msg.warning { border: 1px solid rgba(245, 158, 11, 0.3); border-left: 4px solid var(--neon-yellow); }
+
+.toast-msg.fadeOut {
+    animation: slideOutRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(120%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideOutRight {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(120%); opacity: 0; }
+}
+
+/* ==============================================================
+   RESPONSIVIDADE PREMIUM (Adaptação para Notebooks de Escritório)
+   Foco em resoluções padrão corporativas: 1366x768 e 1280x720
+   ============================================================== */
+
+/* Notebooks comuns e Monitores menores (Até 1400px de largura) */
+@media (max-width: 1400px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+    
+    .insights-grid {
+        grid-template-columns: 1fr; /* Coloca o financeiro debaixo do gráfico se ficar muito apertado */
+        gap: 20px;
+    }
+
+    .hero-premium h1 {
+        font-size: 24px;
+    }
+
+    .glass-card h2 {
+        font-size: 28px; /* Diminui os números gigantes do dashboard */
+    }
+}
+
+/* Notebooks pequenos e Monitores antigos (Até 1024px de largura) */
+@media (max-width: 1024px) {
+    .app-container {
+        grid-template-columns: 220px 1fr; /* Afina o menu lateral */
+    }
+    
+    /* O Modal 4XL vira 1 coluna com rolagem em telas estreitas */
+    .modal-body-grid {
+        grid-template-columns: 1fr; 
+        gap: 20px;
+        padding: 20px;
+    }
+}
+
+/* Proteção contra Telas Baixas (Notebooks com tela de 14 polegadas) */
+@media (max-height: 800px) {
+    #painel-config.central-modal-4xl {
+        height: 95vh; /* Usa quase toda a altura da tela */
+    }
+
+    .drawer-header {
+        padding: 15px 30px !important;
+    }
+    
+    .drawer-header h2 {
+        font-size: 20px !important;
+    }
+
+    .modal-body-grid {
+        padding: 15px 25px;
+        gap: 20px;
+    }
+
+    .price-grid-title {
+        margin-bottom: 5px !important;
+    }
+
+    /* Diminui os inputs do modal para caber tudo na tela */
+    .premium-input {
+        padding: 8px !important;
+        font-size: 12px !important;
+    }
+
+    .drawer-footer {
+        padding: 15px 30px !important;
+    }
+}
+
+/* Proteção extrema (Se a tela for minúscula) */
+@media (max-height: 650px) {
+    .modal-body-grid {
+        overflow-y: scroll; /* Força scroll interno pesado se a tela for um tablet deitado */
+    }
+}
+
+/* ==============================================================
+   CHECKBOX MULTI-SELECT (Design Compacto e Esmeralda)
+   ============================================================== */
+.multi-select-item {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Mais pertinho */
+    padding: 6px 10px; /* Reduzido para ficar bem compacto */
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.multi-select-item:hover {
+    background: rgba(255,255,255,0.04);
+}
+
+.multi-select-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px; /* Quadrado menor e mais delicado */
+    height: 16px;
+    border: 1.5px solid var(--text-muted); /* Borda mais fina */
+    border-radius: 4px;
+    background: rgba(0,0,0,0.3);
+    cursor: pointer;
+    position: relative;
+    transition: 0.2s;
+    margin: 0;
+}
+
+/* O Verde Esmeralda em Ação */
+.multi-select-checkbox:checked {
+    background: var(--neon-green); 
+    border-color: var(--neon-green);
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.3); /* Brilho mais sutil */
+}
+
+/* Checkmark escuro para dar contraste VIP (Estilo Apple) */
+.multi-select-checkbox:checked::after {
+    content: "✓";
+    color: #022c22; /* Um tom quase preto para dar leitura perfeita no verde */
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -45%);
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.multi-select-label {
+    font-size: 12px; /* Letra mais enxuta */
+    color: #e2e8f0;
+    font-weight: 500;
+    user-select: none;
+}
+
+/* Força a opção "Consolidado" a combinar com o Verde, sem precisar mexer no JS */
+#check-todas-empresas + .multi-select-label {
+    color: var(--neon-green) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px;
+}
+
+/* Barra de rolagem verde para combinar */
+#container-multi-empresas::-webkit-scrollbar { width: 4px; }
+#container-multi-empresas::-webkit-scrollbar-thumb { background: var(--neon-green); border-radius: 4px; }
+
+/* ==============================================================
+   TELA DE DOCUMENTOS E PASTAS VIP
+   ============================================================== */
+.folder-card {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border-glass);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.folder-card:hover {
+    background: rgba(255,255,255,0.05);
+    transform: translateY(-3px);
+    border-color: rgba(255,255,255,0.2);
+}
+.folder-icon { font-size: 36px !important; margin-bottom: 12px; }
+.folder-title { font-size: 13px; font-weight: 700; color: #e2e8f0; margin-bottom: 4px; }
+.folder-subtitle { font-size: 10px; color: var(--text-muted); line-height: 1.3; }
+
+.file-item {
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+    padding: 12px 15px; border-radius: 8px; transition: 0.2s;
+}
+.file-item:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+
+
+
+/* ==============================================================
+   CUSTOM DROPDOWN (SELETOR DE MÊS VIP)
+   ============================================================== */
+.custom-dropdown { position: relative; margin: 0; padding: 0; }
+
+.dropdown-header { 
+    display: flex; align-items: center; gap: 8px; padding: 8px 15px; 
+    border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 8px; 
+    background: rgba(0,0,0,0.3); cursor: pointer; transition: 0.2s; 
+}
+
+.dropdown-header:hover { 
+    background: rgba(255,255,255,0.05); border-color: var(--neon-blue); 
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+}
+
+.dropdown-list { 
+    position: absolute; top: 110%; right: 0; 
+    background: rgba(10, 15, 25, 0.95); border: 1px solid var(--neon-blue); 
+    border-radius: 8px; width: 160px; max-height: 250px; overflow-y: auto; 
+    display: none; flex-direction: column; z-index: 1000; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+}
+
+.dropdown-list.active { display: flex; animation: slideDown 0.2s ease forwards; }
+
+.dropdown-item { 
+    padding: 12px 15px; font-size: 12px; font-weight: 600; color: white; 
+    cursor: pointer; transition: 0.2s; border-bottom: 1px solid rgba(255,255,255,0.05); 
+}
+
+.dropdown-item:last-child { border-bottom: none; }
+
+.dropdown-item:hover { 
+    background: rgba(59, 130, 246, 0.15); color: var(--neon-blue); padding-left: 20px; 
+}
+
+/* Scrollbar fina para a listinha */
+.dropdown-list::-webkit-scrollbar { width: 4px; }
+.dropdown-list::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 4px; }
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==============================================================
+   TURBO BOOST: CORREÇÃO DE LAG NA DIGITAÇÃO (GPU ACCELERATION)
+   ============================================================== */
+
+/* 1. Tira o cálculo matemático de desfoque da máscara escura (Zero Lag) */
+#overlay-config {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(10, 15, 25, 0.90) !important; /* Apenas um fundo escuro elegante e leve */
+}
+
+/* 2. Força a Placa de Vídeo (Aceleração de Hardware) a renderizar a Gaveta */
+.settings-drawer {
+    transform: translateZ(0) !important;
+    will-change: transform, right !important;
+    backface-visibility: hidden !important;
+    -webkit-font-smoothing: antialiased !important;
+}
+
+/* ==============================================================
+   ANULAÇÃO DOS SCROLLS (SPINNERS) NOS CAMPOS DE NÚMERO
+   ============================================================== */
+
+/* Para Chrome, Safari, Edge e Opera */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+
+/* Para Firefox */
+input[type="number"] {
+    -moz-appearance: textfield !important;
+    appearance: textfield !important;
+}
+
+/* ==============================================================
+   FORÇA BRUTA PARA ABRIR AS GAVETAS (VENCE O ESTILO INLINE)
+   ============================================================== */
+.settings-drawer.active {
+    right: 0 !important;
+}
+
+#overlay-config.active {
+    display: block !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* ==============================================================
+   ANIMAÇÃO VIP PARA LOGOS B2B (EFEITO HOLOGRAMA/LEVITAÇÃO)
+   ============================================================== */
+
+/* Quando o usuário passar o mouse, o brilho fica intenso */
+.contract-card:hover .logo-b2b-animado, 
+.glow-hover:hover .logo-b2b-animado {
+    filter: drop-shadow(0 0 15px var(--neon-blue)) brightness(1.2);
+    transform: scale(1.1);
+    animation-play-state: paused; /* Pausa a levitação para focar no hover */
+}
+
+@keyframes floatLogo {
+    0% { 
+        transform: translateY(0px); 
+        filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.1)); 
+    }
+    50% { 
+        transform: translateY(-4px); 
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)); 
+    }
+    100% { 
+        transform: translateY(0px); 
+        filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.1)); 
+    }
+}
+
+/* ==============================================================
+   FORÇA TEMA ESCURO NO CALENDÁRIO DO NAVEGADOR (INPUT DATE)
+   ============================================================== */
+input[type="date"] {
+    color-scheme: dark !important;
+}
+
+
+/* ==============================================================
+   CALENDÁRIO PREMIUM: TEMA ESMERALDA COMPACTO
+   ============================================================== */
+
+/* 1. Fundo principal e tamanho encolhido */
+.flatpickr-calendar {
+    background: #0f172a !important; /* Azul mega escuro do nosso Cockpit */
+    border: 1px solid rgba(16, 185, 129, 0.3) !important; /* Borda Esmeralda */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8) !important;
+    width: 250px !important; /* Deixando bem mais compacto */
+    padding-bottom: 5px !important;
+}
+
+/* Trava a largura interna para não quebrar */
+.flatpickr-days, .dayContainer {
+    width: 250px !important;
+    min-width: 250px !important;
+    max-width: 250px !important;
+}
+
+/* 2. Cabeçalho do mês e setas */
+.flatpickr-months .flatpickr-month {
+    background: transparent !important;
+    color: white !important;
+    height: 40px !important;
+}
+
+.flatpickr-current-month {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2px !important;
+    width: 100% !important;
+    left: 0 !important;
+    padding: 0 30px !important;
+    height: 40px !important;
+    font-size: 13px !important;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    width: auto !important;
+    padding: 0 2px !important;
+    margin: 0 !important;
+    text-align: right !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+}
+
+.flatpickr-current-month .numInputWrapper {
+    width: 62px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    margin-left: 4px !important;
+    padding: 0 14px 0 2px !important;
+    position: relative !important;
+}
+
+.flatpickr-current-month .numInputWrapper span.arrowUp,
+.flatpickr-current-month .numInputWrapper span.arrowDown {
+    right: 0 !important;
+    width: 12px !important;
+    opacity: 0.75 !important;
+    border: none !important;
+}
+
+.flatpickr-current-month input.cur-year {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    color: var(--neon-green) !important;
+    text-align: left !important;
+}
+
+/* Setinhas de voltar/avançar o mês em Esmeralda */
+.flatpickr-months .flatpickr-prev-month, 
+.flatpickr-months .flatpickr-next-month {
+    color: var(--neon-green) !important;
+    fill: var(--neon-green) !important;
+}
+
+.flatpickr-months .flatpickr-prev-month:hover svg, 
+.flatpickr-months .flatpickr-next-month:hover svg {
+    fill: white !important; /* Fica branco ao passar o mouse */
+}
+
+/* 3. Dias da semana (Dom, Seg, Ter...) */
+span.flatpickr-weekday {
+    color: #94a3b8 !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+}
+
+/* 4. Bolinhas dos dias (Bem menores e alinhadas) */
+.flatpickr-day {
+    color: #cbd5e1 !important;
+    max-width: 35px !important; /* Trava o tamanho exato... */
+    flex-basis: 14.285% !important; /* ...e força a ter exatamente 7 dias na linha (100% / 7) */
+    height: 30px !important; 
+    line-height: 30px !important;
+    font-size: 12px !important; 
+    margin-top: 2px !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+/* Dia atual (Hoje) - Fica com contorno esmeralda */
+.flatpickr-day.today {
+    border-color: var(--neon-green) !important;
+    color: white !important;
+}
+
+/* Efeito ao passar o mouse */
+.flatpickr-day:hover {
+    background: rgba(16, 185, 129, 0.15) !important;
+    border-color: rgba(16, 185, 129, 0.5) !important;
+    color: var(--neon-green) !important;
+}
+
+/* 5. DIA SELECIONADO (O Toque Esmeralda Principal) */
+.flatpickr-day.selected, 
+.flatpickr-day.startRange, 
+.flatpickr-day.endRange, 
+.flatpickr-day.selected.inRange, 
+.flatpickr-day.startRange.inRange, 
+.flatpickr-day.endRange.inRange, 
+.flatpickr-day.selected:focus, 
+.flatpickr-day.startRange:focus, 
+.flatpickr-day.endRange:focus, 
+.flatpickr-day.selected:hover, 
+.flatpickr-day.startRange:hover, 
+.flatpickr-day.endRange:hover, 
+.flatpickr-day.selected.prevMonthDay, 
+.flatpickr-day.startRange.prevMonthDay, 
+.flatpickr-day.endRange.prevMonthDay, 
+.flatpickr-day.selected.nextMonthDay, 
+.flatpickr-day.startRange.nextMonthDay, 
+.flatpickr-day.endRange.nextMonthDay {
+    background: #10b981 !important; /* Fundo Esmeralda */
+    border-color: #10b981 !important;
+    color: #050505 !important; /* Número preto para dar contraste */
+    font-weight: 900 !important;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.5) !important; /* Brilho neon em volta */
+}
+
+/* 6. REMOÇÃO DE SOMBRAS E FUNDOS NATIVOS DO TEMA DARK */
+.flatpickr-months,
+.flatpickr-month,
+.flatpickr-weekdays,
+.flatpickr-weekday,
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-current-month .numInputWrapper,
+.flatpickr-current-month input.cur-year {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* Remove a bordinha ao focar/passar o mouse no ano e mês */
+.flatpickr-current-month .flatpickr-monthDropdown-months:hover,
+.flatpickr-current-month .flatpickr-monthDropdown-months:focus,
+.flatpickr-current-month input.cur-year:hover,
+.flatpickr-current-month input.cur-year:focus {
+    background: rgba(255, 255, 255, 0.05) !important;
+    outline: none !important;
+}
+
+/* 7. DIAS DE OUTROS MESES (Anteriores e Próximos) BEM FRACOS */
+.flatpickr-day.prevMonthDay, 
+.flatpickr-day.nextMonthDay {
+    color: rgba(255, 255, 255, 0.15) !important; /* Letra quase invisível */
+    opacity: 0.3 !important; /* Deixa a bolinha transparente */
+    background: transparent !important;
+    border-color: transparent !important;
+}
+
+/* Evita que esses dias acendam com força total ao passar o mouse */
+.flatpickr-day.prevMonthDay:hover, 
+.flatpickr-day.nextMonthDay:hover {
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    border-color: transparent !important;
+}
+
+/* 8. FUNDO DARK NAS OPÇÕES DO SELECT NATIVO DO MÊS */
+.flatpickr-monthDropdown-months option {
+    background-color: #0f172a !important; /* Azul escuro */
+    color: #ffffff !important;
+}
+
+
+#lista-contratos-render {
+    content-visibility: auto; 
+    contain-intrinsic-size: 100px;
+}
+
+/* ==============================================================
+   ⚡ PATCH DEFINITIVO ARGON: ZERO-LAG & GPU OVERDRIVE (120 FPS)
+   ============================================================== */
+
+/* 1. MATADOR DO VILÃO #1: Substitui o filter:blur(120px) por Gradiente Radial (Zero custo de GPU!) */
+.fluid-bg {
+    filter: none !important;
+    -webkit-filter: none !important;
+    animation: none !important; /* Para o repaint infinito de 60x por segundo no fundo */
+    opacity: 0.45 !important;
+    pointer-events: none !important;
+}
+
+.fluid-purple {
+    width: 650px !important;
+    height: 650px !important;
+    top: -200px !important;
+    left: -200px !important;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.45) 0%, rgba(168, 85, 247, 0) 70%) !important;
+}
+
+.fluid-blue {
+    width: 550px !important;
+    height: 550px !important;
+    bottom: -150px !important;
+    right: -150px !important;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.45) 0%, rgba(59, 130, 246, 0) 70%) !important;
+}
+
+/* 2. MATADOR DO VILÃO #2: Desativa o backdrop-filter repetido nos cards (mantém o vidro escuro elegante) */
+.glass-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(15, 20, 30, 0.82) !important; /* Vidro escuro sólido de alta performance */
+    transition: transform 0.15s ease-out, border-color 0.15s ease-out, box-shadow 0.15s ease-out !important;
+}
+
+/* Mantém o blur apenas na Sidebar única lateral */
+.sidebar.glass-panel {
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    background: rgba(12, 16, 24, 0.88) !important;
+}
+
+/* 3. HOVER INSTANTÂNEO (150ms): Sem troca de z-index que trava a árvore do Chrome */
+.glow-hover, .glow-hover-red, .glow-hover-yellow, .glow-hover-blue {
+    transition: transform 0.15s ease-out, border-color 0.15s ease-out, box-shadow 0.15s ease-out !important;
+    will-change: auto !important;
+}
+
+.glow-hover:hover, .glow-hover-red:hover, .glow-hover-yellow:hover, .glow-hover-blue:hover {
+    z-index: 1 !important; /* Impede o Layer Thrashing! */
+    transform: translateY(-2px) !important;
+}
+
+/* 4. Desativa animações infinitas de box-shadow que forçam repaint na CPU */
+.speedometer-badge, .pulse-dot {
+    animation: none !important;
+}
+
+    /* =========================================
+   SCROLLBAR PREMIUM (ESTILO MACOS)
+   ========================================= */
+/* Barra de Rolagem Premium */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(168, 85, 247, 0.5);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--neon-purple);
+}
+
+                /* =========================================
+                   O MATA-SCROLL ABSOLUTO DO NAVEGADOR
+                   ========================================= */
+                html, body {
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    height: 100vh !important;
+                    max-height: 100vh !important;
+                    overflow: hidden !important; /* Trava o navegador */
+                    box-sizing: border-box;
+                }
+                
+                .app-container {
+                    height: 100vh !important;
+                    max-height: 100vh !important;
+                    overflow: hidden !important; /* Trava o container principal */
+                }
+
+                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+                @keyframes scanline { 0% { left: -100%; } 100% { left: 200%; } }
+                
+                /* Barras de rolagem chiques e internas (SÓ ONDE PRECISA) */
+                #faturamento-empresas::-webkit-scrollbar { width: 4px; }
+                #faturamento-empresas::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
+                #faturamento-empresas::-webkit-scrollbar-thumb { background: var(--neon-green); border-radius: 4px; }
+                
+                #lista-adicionais::-webkit-scrollbar { width: 3px; }
+                #lista-adicionais::-webkit-scrollbar-track { background: transparent; }
+                #lista-adicionais::-webkit-scrollbar-thumb { background: var(--neon-yellow); border-radius: 3px; }
+
+
+                #modal-documentos .drawer-content {
+                min-height: 0 !important;
+                overflow: hidden !important;
+            }
+
+            #conteudo-pasta {
+                min-height: 0 !important;
+                overflow: hidden !important;
+                flex: 1 !important;
+            }
+
+            #lista-arquivos-render {
+                flex: 1 !important;
+                min-height: 0 !important;
+                max-height: calc(100vh - 220px) !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+            }
+
+            #lista-arquivos-render .file-item {
+                flex-shrink: 0 !important;
+            }
+
+            #lista-arquivos-render::-webkit-scrollbar { width: 4px; }
+            #lista-arquivos-render::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 4px; }
+
+            /* Mantém inputs internos 100% transparentes mesmo ao clicar */
+            #painel-config input,
+            #painel-config input:focus,
+            #modal-operacoes input:not(#qtd-tickets),
+            #modal-operacoes input:not(#qtd-tickets):focus {
+                background: transparent !important;
+                background-color: transparent !important;
+                border: none !important;
+                outline: none !important;
+                box-shadow: none !important;
+            }
+
+            /* Brilha APENAS a caixinha individual onde o input está (Zero Lag com focus-within) */
+            #box-input-desc:focus-within,
+            #box-input-mes:focus-within,
+            #box-input-valor:focus-within {
+                border-color: rgba(59, 130, 246, 0.8) !important;
+                box-shadow: 0 0 12px rgba(59, 130, 246, 0.25) !important;
+            }
+
+            /* Redimensiona automaticamente o calendário quando abre na parte inferior da tela */
+            .flatpickr-calendar.arrowTop {
+                transform-origin: top center !important;
+            }
+            @media (max-height: 950px) {
+                .flatpickr-calendar {
+                    transform: scale(0.88) !important;
+                    transform-origin: top right !important;
+                }
+            }
+
+            /* ÍCONE DE AJUDA (?) PADRÃO VALE DO SILÍCIO */
+            .help-icon-vip {
+                padding: 0 !important;
+                width: 16px;
+                height: 16px;
+                border-radius: 50% !important;
+                display: inline-flex !important;
+                align-items: center;
+                justify-content: center;
+                background: rgba(255, 255, 255, 0.05) !important;
+                border: 1px solid rgba(255, 255, 255, 0.14) !important;
+                color: #94a3b8 !important;
+                cursor: help !important;
+            }
+            .help-icon-vip .material-icons-round {
+                font-size: 12px !important;
+            }
+            .help-icon-vip:hover {
+                background: rgba(59, 130, 246, 0.18) !important;
+                border-color: var(--neon-blue) !important;
+                color: #ffffff !important;
+                box-shadow: 0 0 10px rgba(59, 130, 246, 0.35);
+            }
+            
+            /* ==============================================================
+            ⚡ TURBO 120 FPS NO MODAL DE AJUSTES E MODAIS CENTRAIS
+            ============================================================== */
+            #painel-config.central-modal-4xl {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background: linear-gradient(165deg, #0e1320 0%, #080b13 100%) !important;
+                will-change: transform, opacity !important;
+                backface-visibility: hidden !important;
+                transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.15s ease-out !important;
+            }
+
+            #modal-confirmacao, #modal-pdf-quickview {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+
+            /* ==============================================================
+            EFEITO SPOTLIGHT (DESFOQUE EM CARDS INATIVOS)
+            ============================================================== */
+            .card-emp-interativo {
+                transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            }
+
+            .card-inativo-spotlight {
+                filter: blur(2px) grayscale(50%);
+                opacity: 0.4;
+                transform: scale(0.98);
+            }
+            .card-inativo-spotlight:hover {
+                filter: blur(0px) grayscale(0%);
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            #modal-contratos .premium-input, #modal-relatorios .premium-input, #qtd-tickets {
+    background-color: rgba(10, 15, 25, 0.95) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+#modal-contratos .premium-input:focus, #modal-relatorios .premium-input:focus, #qtd-tickets:focus {
+    border-color: rgba(59, 130, 246, 0.6) !important;
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.25) !important;
+}
+.login-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.login-field-icon {
+    position: absolute;
+    left: 13px;
+    font-size: 17px !important;
+    color: #64748b;
+    pointer-events: none;
+    transition: color 0.25s ease, transform 0.25s ease;
+    z-index: 2;
+}
+.login-field-input {
+    width: 100%;
+    padding: 12px 14px 12px 40px !important;
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    background: rgba(10, 15, 28, 0.85) !important;
+    border: 1px solid rgba(255, 255, 255, 0.09) !important;
+    border-radius: 10px !important;
+    outline: none !important;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5) !important;
+    transition: all 0.25s ease !important;
+    box-sizing: border-box !important;
+}
+.login-field-input::placeholder {
+    color: #475569 !important;
+    font-weight: 500 !important;
+}
+.login-input-group:focus-within .login-field-input {
+    border-color: #3b82f6 !important;
+    background: rgba(15, 23, 42, 0.98) !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18), 0 0 18px rgba(59, 130, 246, 0.25) !important;
+}
+.login-input-group:focus-within .login-field-icon {
+    color: #3b82f6 !important;
+    transform: scale(1.08);
+}
+.login-eye-btn {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+.login-eye-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+}
+.login-field-input:-webkit-autofill,
+.login-field-input:-webkit-autofill:hover,
+.login-field-input:-webkit-autofill:focus,
+.login-field-input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 50px #0a0f1c inset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    caret-color: #ffffff !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+}
+
+/* ==============================================================
+   ARQUITETURA UNIFICADA: TOOLTIP, SMART TAGS, HOLOGRAMAS E ERROS
+   ============================================================== */
+.flatpickr-calendar {
+    z-index: 99999999 !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 40px #0a0f19 inset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    caret-color: #ffffff !important;
+}
+
+.smart-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.smart-tag:hover {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.4);
+    color: white;
+}
+
+.smart-tag * {
+    pointer-events: none !important;
+}
+
+.material-icons-round {
+    font-family: 'Material Icons Round' !important;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    min-width: 1em;
+    flex-shrink: 0 !important;
+    overflow: visible !important;
+    vertical-align: middle;
+    user-select: none;
+}
+
+#global-neon-tooltip {
+    position: fixed;
+    background: #0f172a;
+    border: 1px solid rgba(16, 185, 129, 0.8);
+    color: #10b981;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(16, 185, 129, 0.3);
+    pointer-events: none;
+    z-index: 99999999;
+    display: none;
+    white-space: nowrap;
+    font-family: 'Inter', sans-serif;
+}
+
+@keyframes shakeError {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+
+.input-erro-borda {
+    border: 1.5px solid #ef4444 !important;
+    background: rgba(239, 68, 68, 0.12) !important;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.4) !important;
+    animation: shakeError 0.35s ease-in-out;
+}
+
+@keyframes floatHoloData {
+    0%, 100% { transform: translate3d(0, 0px, 0); }
+    50% { transform: translate3d(0, -5px, 0); }
+}
+
+@keyframes holoIFoodFloat {
+    0%, 100% { transform: translate3d(0, 0px, 0) scale(1); }
+    50% { transform: translate3d(0, -4px, 0) scale(1.03); }
+}
+
+@keyframes holoBasePulse {
+    0%, 100% { transform: scaleX(1); opacity: 0.45; }
+    50% { transform: scaleX(0.8); opacity: 0.85; }
+}
+
+.holo-core-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6px 10px;
+    margin-bottom: 4px;
+    position: relative;
+}
+
+.holo-core-svg {
+    width: 105px;
+    height: 90px;
+    filter: drop-shadow(0 0 14px rgba(6, 182, 212, 0.45));
+    will-change: transform;
+    animation: floatHoloData 4s ease-in-out infinite;
+}
+
+.gov-card-vip {
+    padding: 12px 14px;
+    background: rgba(10, 15, 25, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-height: 820px) {
+    .holo-core-svg { width: 75px !important; height: 65px !important; }
+    .holo-core-wrapper { padding: 2px 6px !important; margin-bottom: 2px !important; }
+    .holo-sub-title { font-size: 8px !important; }
+    .menu-item { padding: 9px 22px !important; font-size: 13px !important; }
+    .user-profile { padding-bottom: 16px !important; margin-bottom: 14px !important; }
+    #separador-gestao { margin-top: 14px !important; margin-bottom: 6px !important; }
+    .gov-card-vip { padding: 9px 12px !important; }
+}
+
+@media (max-height: 700px) {
+    .holo-core-wrapper { display: none !important; }
+}
+            

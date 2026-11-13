@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="pt-BR" translate="no" class="notranslate">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refeitório Inteligente | CONTROL ID</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b0f19'/%3E%3Cpath d='M10 10h12v3H10zM10 16h8v3H10zM10 22h10v3H10z' fill='%2310b981'/%3E%3C/svg%3E">
+
+    <!-- Biblioteca Flatpickr (Calendário Sênior Dark Mode) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
+</head>
+<body>
+
+    <!-- ==============================================================
+         TELA DE LOGIN (AUTH GATE VIP - RESPONSIVO E CENTRALIZADO)
+         ============================================================== -->
+    <div id="tela-login" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #050505; z-index: 99999; display: none; flex-direction: column; overflow-y: auto; box-sizing: border-box;">
+        
+        <!-- Efeito de fundo do login -->
+        <div class="fluid-bg fluid-purple" style="opacity: 0.3;"></div>
+        <div class="fluid-bg fluid-blue" style="opacity: 0.3;"></div>
+
+        <!-- WRAPPER INVISÍVEL DE CENTRALIZAÇÃO -->
+        <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; min-height: fit-content;">
+            
+            <!-- CAIXA DE LOGIN ENTERPRISE (PADRÃO LINEAR / STRIPE) -->
+            <div class="glass-panel" style="width: 100%; max-width: 390px; padding: 34px 32px 30px 32px; text-align: center; border-radius: 24px; border: 1px solid rgba(59, 130, 246, 0.35); border-top: 1px solid rgba(168, 85, 247, 0.65); background: linear-gradient(165deg, rgba(15, 22, 36, 0.96) 0%, rgba(7, 10, 18, 0.98) 100%); box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9), 0 0 45px rgba(59, 130, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.12); position: relative; z-index: 2; box-sizing: border-box;">
+                
+                <!-- Badge de Telemetria da Unidade -->
+                <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 4px 10px; border-radius: 20px; margin-bottom: 16px;">
+                    <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981;"></span>
+                    <span style="font-size: 8.5px; font-weight: 900; color: #34d399; letter-spacing: 1px;">SISTEMA INDUSTRIAL • SINCRONIZADO</span>
+                </div>
+
+                <!-- Ícone Biométrico Central -->
+                <div style="background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue)); width: 58px; height: 58px; border-radius: 16px; display: flex; justify-content: center; align-items: center; margin: 0 auto 14px auto; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.45), inset 0 1px 1px rgba(255,255,255,0.3);">
+                    <span class="material-icons-round" style="font-size: 30px; color: white;">fingerprint</span>
+                </div>
+                
+                <h2 style="margin: 0 0 4px 0; font-size: 22px; font-weight: 900; letter-spacing: -0.5px; color: white;">Refeitório Inteligente</h2>
+                <p style="color: #94a3b8; font-size: 10px; margin-bottom: 22px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;">Auditoria Biométrica & Prevenção de Glosas</p>
+
+                <div style="display: flex; flex-direction: column; gap: 12px; text-align: left;">
+                    <div>
+                        <label style="font-size: 9px; color: #94a3b8; font-weight: 800; margin-bottom: 6px; display: block; letter-spacing: 0.8px;">CREDENCIAIS DO OPERADOR / GESTOR</label>
+                        <div class="login-input-group">
+                            <span class="material-icons-round login-field-icon">alternate_email</span>
+                            <input type="text" id="login-user" readonly onfocus="this.removeAttribute('readonly');" class="login-field-input" placeholder="Digite seu email">
+                        </div>
+                    </div>
+                    <div>
+                        <label style="font-size: 9px; color: #94a3b8; font-weight: 800; margin-bottom: 6px; display: block; letter-spacing: 0.8px;">CHAVE DE ACESSO</label>
+                        <div class="login-input-group">
+                            <span class="material-icons-round login-field-icon">lock</span>
+                            <input type="password" id="login-senha" maxlength="20" readonly onfocus="this.removeAttribute('readonly');" class="login-field-input" placeholder="Digite sua senha" style="padding-right: 38px;" onkeypress="if(event.key === 'Enter') fazerLogin()">
+                            <button type="button" class="login-eye-btn" onclick="const s=document.getElementById('login-senha'); const i=this.querySelector('span'); if(s.type==='password'){s.type='text'; i.innerText='visibility_off';}else{s.type='password'; i.innerText='visibility';}" tabindex="-1">
+                                <span class="material-icons-round" style="font-size: 16px;">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-premium" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 10px; padding: 12px; font-size: 12px; font-weight: 800; letter-spacing: 0.8px; margin-top: 4px;" onclick="fazerLogin()">
+                        AUTENTICAR SISTEMA <span class="material-icons-round" style="font-size: 17px;">login</span>
+                    </button>
+
+                    <!-- AVISO DE ERRO INTEGRADO -->
+                    <p id="login-erro" style="color: #ef4444; font-size: 11px; margin-top: 4px; display: none; text-align: center; font-weight: 700; letter-spacing: 0.5px;"></p>
+
+                    <!-- =========================================================
+                         PORTAL VIP EXCLUSIVO RECRUTADOR iFOOD (SANDBOX 1-CLICK)
+                         ========================================================= -->
+                    <div style="display: flex; align-items: center; gap: 10px; margin: 10px 0 4px 0;">
+                        <div style="flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(234, 29, 44, 0.5));"></div>
+                        <span style="font-size: 8px; color: #ff6b78; font-weight: 900; letter-spacing: 1.4px;">SANDBOX AVALIADOR iFOOD</span>
+                        <div style="flex: 1; height: 1px; background: linear-gradient(90deg, rgba(234, 29, 44, 0.5), transparent);"></div>
+                    </div>
+
+                    <div onclick="entrarModoRecrutadorIFood()" style="position: relative; overflow: hidden; background: linear-gradient(145deg, rgba(234, 29, 44, 0.18) 0%, rgba(15, 15, 22, 0.96) 100%); border: 1px solid rgba(234, 29, 44, 0.6); border-radius: 14px; padding: 12px 14px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 25px rgba(234, 29, 44, 0.22), inset 0 0 15px rgba(234, 29, 44, 0.08); transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='#EA1D2C'; this.style.boxShadow='0 12px 30px rgba(234, 29, 44, 0.45)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(234, 29, 44, 0.6)'; this.style.boxShadow='0 8px 25px rgba(234, 29, 44, 0.22)';">
+                        
+                        <div style="display: flex; align-items: center; gap: 12px; position: relative; z-index: 2;">
+                            <div style="background: #EA1D2C; width: 42px; height: 42px; border-radius: 11px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 16px rgba(234, 29, 44, 0.7); flex-shrink: 0;">
+                                <svg width="28" height="20" viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <ellipse cx="32" cy="18" rx="9" ry="12" transform="rotate(15 32 18)" fill="white"/>
+                                    <ellipse cx="64" cy="18" rx="9" ry="12" transform="rotate(15 64 18)" fill="white"/>
+                                    <path d="M18 42 C 32 62, 68 62, 84 38" stroke="white" stroke-width="9" stroke-linecap="round" fill="none"/>
+                                    <path d="M72 36 L 86 36 L 83 50" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                </svg>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; text-align: left;">
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <span style="font-size: 8px; background: rgba(234, 29, 44, 0.28); color: #fda4af; border: 1px solid rgba(234, 29, 44, 0.5); padding: 1px 6px; border-radius: 4px; font-weight: 900; letter-spacing: 0.8px;">ENTRE SEM SENHA</span>
+                                    <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 6px #10b981;"></span>
+                                </div>
+                                <span style="color: white; font-size: 13px; font-weight: 900; letter-spacing: -0.2px; margin-top: 2px;">Avaliador iFood GenAI</span> 
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(234, 29, 44, 0.22); border: 1px solid rgba(234, 29, 44, 0.45); width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <span class="material-icons-round" style="color: #ff6b78; font-size: 17px;">arrow_forward</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DOCK DE EMPRESAS REAIS HOMOLOGADAS NO ECOSSISTEMA -->
+        <div style="width: 100%; text-align: center; z-index: 2; padding: 6px 15px 24px 15px; box-sizing: border-box; flex-shrink: 0;">
+            <p style="color: #64748b; font-size: 8.5px; font-weight: 900; letter-spacing: 2px; margin-bottom: 10px; text-transform: uppercase;">Ecossistema DESENVOLVIDO POR RICARDO LIMA PARA OS PARCEIROS:</p>
+            
+            <div style="display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap; max-width: 820px; margin: 0 auto;">
+                <div style="display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); padding: 4px 10px; border-radius: 20px; opacity: 0.75; transition: 0.2s;" onmouseover="this.style.opacity='1'; this.style.borderColor='rgba(59,130,246,0.4)'" onmouseout="this.style.opacity='0.75'; this.style.borderColor='rgba(255,255,255,0.07)'">
+                    <span class="material-icons-round" style="font-size: 13px; color: #3b82f6;">local_fire_department</span>
+                    <span style="font-size: 9.5px; font-weight: 800; color: #cbd5e1; letter-spacing: 0.5px;">ULTRAGAZ</span>
+                </div>
+                <div style="display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); padding: 4px 10px; border-radius: 20px; opacity: 0.75; transition: 0.2s;" onmouseover="this.style.opacity='1'; this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.opacity='0.75'; this.style.borderColor='rgba(255,255,255,0.07)'">
+                    <span class="material-icons-round" style="font-size: 13px; color: #10b981;">cleaning_services</span>
+                    <span style="font-size: 9.5px; font-weight: 800; color: #cbd5e1; letter-spacing: 0.5px;">SOSERVI</span>
+                </div>
+                <div style="display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); padding: 4px 10px; border-radius: 20px; opacity: 0.75; transition: 0.2s;" onmouseover="this.style.opacity='1'; this.style.borderColor='rgba(236,72,153,0.4)'" onmouseout="this.style.opacity='0.75'; this.style.borderColor='rgba(255,255,255,0.07)'">
+                    <span class="material-icons-round" style="font-size: 13px; color: #ec4899;">restaurant</span>
+                    <span style="font-size: 9.5px; font-weight: 800; color: #cbd5e1; letter-spacing: 0.5px;">SODEXO</span>
+                </div>
+                <div style="display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); padding: 4px 10px; border-radius: 20px; opacity: 0.75; transition: 0.2s;" onmouseover="this.style.opacity='1'; this.style.borderColor='rgba(245,158,11,0.4)'" onmouseout="this.style.opacity='0.75'; this.style.borderColor='rgba(255,255,255,0.07)'">
+                    <span class="material-icons-round" style="font-size: 13px; color: #f59e0b;">engineering</span>
+                    <span style="font-size: 9.5px; font-weight: 800; color: #cbd5e1; letter-spacing: 0.5px;">ARMAC</span>
+                </div>
+                <div style="display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); padding: 4px 10px; border-radius: 20px; opacity: 0.75; transition: 0.2s;" onmouseover="this.style.opacity='1'; this.style.borderColor='rgba(148,163,184,0.4)'" onmouseout="this.style.opacity='0.75'; this.style.borderColor='rgba(255,255,255,0.07)'">
+                    <span class="material-icons-round" style="font-size: 13px; color: #94a3b8;">handyman</span>
+                    <span style="font-size: 9.5px; font-weight: 800; color: #cbd5e1; letter-spacing: 0.5px;">JC MONTAGEM</span>
+                </div>
+                <div style="display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); padding: 4px 10px; border-radius: 20px; opacity: 0.75; transition: 0.2s;" onmouseover="this.style.opacity='1'; this.style.borderColor='rgba(139,92,246,0.4)'" onmouseout="this.style.opacity='0.75'; this.style.borderColor='rgba(255,255,255,0.07)'">
+                    <span class="material-icons-round" style="font-size: 13px; color: #8b5cf6;">local_shipping</span>
+                    <span style="font-size: 9.5px; font-weight: 800; color: #cbd5e1; letter-spacing: 0.5px;">BC TRANSPORTES</span>
+                </div>
+                <div style="display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); padding: 4px 10px; border-radius: 20px; opacity: 0.75; transition: 0.2s;" onmouseover="this.style.opacity='1'; this.style.borderColor='rgba(239,68,68,0.4)'" onmouseout="this.style.opacity='0.75'; this.style.borderColor='rgba(255,255,255,0.07)'">
+                    <span class="material-icons-round" style="font-size: 13px; color: #ef4444;">gpp_good</span>
+                    <span style="font-size: 9.5px; font-weight: 800; color: #cbd5e1; letter-spacing: 0.5px;">AVI SEGURANÇA</span>
+                </div>
+                <div style="display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); padding: 4px 10px; border-radius: 20px; opacity: 0.75; transition: 0.2s;" onmouseover="this.style.opacity='1'; this.style.borderColor='rgba(234,179,8,0.4)'" onmouseout="this.style.opacity='0.75'; this.style.borderColor='rgba(255,255,255,0.07)'">
+                    <span class="material-icons-round" style="font-size: 13px; color: #eab308;">security</span>
+                    <span style="font-size: 9.5px; font-weight: 800; color: #cbd5e1; letter-spacing: 0.5px;">SEGURPRO</span>
+                </div>
+                <div style="display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); padding: 4px 10px; border-radius: 20px; opacity: 0.75; transition: 0.2s;" onmouseover="this.style.opacity='1'; this.style.borderColor='rgba(14,165,233,0.4)'" onmouseout="this.style.opacity='0.75'; this.style.borderColor='rgba(255,255,255,0.07)'">
+                    <span class="material-icons-round" style="font-size: 13px; color: #0ea5e9;">apartment</span>
+                    <span style="font-size: 9.5px; font-weight: 800; color: #cbd5e1; letter-spacing: 0.5px;">TOP SERVICE</span>
+                </div>
+                <div style="display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); padding: 4px 10px; border-radius: 20px; opacity: 0.75; transition: 0.2s;" onmouseover="this.style.opacity='1'; this.style.borderColor='rgba(249,115,22,0.4)'" onmouseout="this.style.opacity='0.75'; this.style.borderColor='rgba(255,255,255,0.07)'">
+                    <span class="material-icons-round" style="font-size: 13px; color: #f97316;">construction</span>
+                    <span style="font-size: 9.5px; font-weight: 800; color: #cbd5e1; letter-spacing: 0.5px;">PREDIAL</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- LUZES FLUIDAS NO FUNDO PARA DAR VIDA -->
+    <div class="fluid-bg fluid-purple"></div>
+    <div class="fluid-bg fluid-blue"></div>
+
+    <div class="app-container" style="display: none;">
+
+        <!-- Sidebar Premium -->
+        <aside class="sidebar glass-panel" style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh;">
+            
+            <!-- PARTE SUPERIOR: Perfil e Botões (O "flex: 1" empurra tudo pra baixo) -->
+            <div class="user-profile" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        
+                        <!-- INÍCIO: ÁREA DO AVATAR CLICÁVEL -->
+                        <div style="position: relative; cursor: pointer;" onclick="document.getElementById('input-foto-perfil').click()" data-valor="📸 Alterar Foto de Perfil" class="glow-hover">
+                            <div id="ui-avatar" class="avatar glow-avatar" style="background-size: cover; background-position: center; transition: 0.3s; pointer-events: none;">RL</div>
+                            
+                            <!-- Ícone flutuante de câmera -->
+                            <div style="position: absolute; bottom: -2px; right: -2px; background: var(--neon-blue); border-radius: 50%; padding: 4px; display: flex; border: 2px solid var(--bg-deep); box-shadow: 0 0 8px rgba(59, 130, 246, 0.5); pointer-events: none;">
+                                <span class="material-icons-round" style="font-size: 12px; color: white;">photo_camera</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Input nativo escondido para ler arquivo -->
+                        <input type="file" id="input-foto-perfil" accept="image/jpeg, image/png, image/webp" style="display: none;" onchange="processarNovaFotoPerfil(event)">
+                        <!-- FIM: ÁREA DO AVATAR CLICÁVEL -->
+
+                        <div class="user-info">
+                            <h3 id="ui-nome">Carregando...</h3>
+                            <p id="ui-role" class="text-neon-blue" style="font-size: 9px;">BUSCANDO...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- BOTÃO DE LOGOUT COM TOOLTIP NEON -->
+                    <button onclick="fazerLogout()" data-valor="🚪 Encerrar Sessão" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; border-radius: 8px; padding: 6px; cursor: pointer; display: flex; transition: 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.22)'" onmouseout="this.style.background='rgba(239,68,68,0.1)'">
+                        <span class="material-icons-round" style="font-size: 16px; pointer-events: none;">logout</span>
+                    </button>
+                </div>
+
+                <div class="menu-section">
+                    <p class="menu-label">CONTROLE</p>
+                    
+                    <a href="#" class="menu-item active">
+                        <span class="material-icons-round">space_dashboard</span>
+                        Dashboard
+                    </a>
+
+                    <a href="#" class="menu-item" onclick="abrirOperacoes()">
+                        <span class="material-icons-round" style="color: var(--neon-blue);">cloud_sync</span>
+                        Entrada de Dados
+                    </a>
+
+                    <!-- BOTÃO SENSÍVEL: RELATÓRIOS -->
+                    <a href="#" id="menu-relatorios" class="menu-item" onclick="abrirCentralRelatorios()">
+                        <span class="material-icons-round" style="color: #ec4899;">auto_graph</span>
+                        Central de Relatórios <span class="badge-novo" style="color: #ec4899; background: rgba(236,72,153,0.2); border: 1px solid #ec4899;">VIP</span>
+                    </a>
+                    
+                    <!-- NOVO BOTÃO SENSÍVEL: DOCUMENTOS -->
+                    <a href="#" id="menu-documentos" class="menu-item" onclick="abrirCentralDocumentos()">
+                        <span class="material-icons-round">folder_special</span>
+                        Documentos
+                    </a>
+                
+                    <!-- SEPARADOR DA CATEGORIA (SENSÍVEL) -->
+                    <div id="separador-gestao" style="margin-top: 30px; margin-bottom: 10px; padding-left: 15px;">
+                        <span style="color: var(--text-muted); font-size: 11px; font-weight: 800; letter-spacing: 1.5px;">GESTÃO</span>
+                    </div>
+                    
+                    <!-- BOTÃO SENSÍVEL: CONTRATOS -->
+                    <a href="#" id="menu-contratos" class="menu-item" onclick="abrirContratos()">
+                        <span class="material-icons-round" style="color: #f59e0b;">handshake</span>
+                        Contratos B2B
+                    </a>
+                    
+                    <!-- BOTÃO SENSÍVEL: AJUSTES -->
+                    <a href="#" id="menu-ajustes" class="menu-item" onclick="abrirConfiguracoes()">
+                        <span class="material-icons-round">settings</span>
+                        Ajustes
+                    </a>
+                </div>
+
+           <!-- PARTE INFERIOR: Governança de Dados + Assinatura (Ajuste fino -10px) -->
+            <div style="margin-top: auto; padding: 0 15px; display: flex; flex-direction: column; gap: 15px; flex-shrink: 0; transform: translateY(-10px);">
+                
+                <!-- Governança Compacta -->
+                <div style="padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; box-shadow: inset 0 0 20px rgba(0,0,0,0.2);">
+                    <div style="font-size: 9px; color: var(--text-muted); font-weight: 800; letter-spacing: 1px; margin-bottom: 8px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">GOVERNANÇA DE DADOS</div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="material-icons-round" style="color: var(--neon-green); font-size: 16px;">cloud_sync</span>
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-size: 8px; color: var(--text-muted); font-weight: 800;">ÚLTIMO LOTE CSV</span>
+                                <span style="font-size: 10px; color: white; font-weight: 700;" id="last-sync-time">Aguardando...</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="material-icons-round" style="color: var(--neon-blue); font-size: 16px;">filter_alt</span>
+                            <span style="font-size: 10px; color: #e2e8f0; font-weight: 600;">Filtro Duplicidades: <span style="color: var(--neon-blue); font-weight: 800;">Ativo</span></span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="material-icons-round" style="color: #a855f7; font-size: 16px;">security</span>
+                            <span style="font-size: 10px; color: #e2e8f0; font-weight: 600;">Integridade: <span style="color: #a855f7; font-weight: 800;">100% Segura</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ASSINATURA DO DESENVOLVEDOR VIP (Minimalista, Sem Fundo, Fluido Azul Bebê) -->
+                <div onclick="window.open('https://wa.me/5571986030162', '_blank')" style="position: relative; padding: 10px; background: transparent; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;" onmouseover="this.style.transform='scale(1.06)'; this.children[0].style.opacity='0.5'; this.children[0].style.filter='blur(18px)';" onmouseout="this.style.transform='scale(1)'; this.children[0].style.opacity='0.35'; this.children[0].style.filter='blur(12px)';">
+                    
+                    <!-- Fluido Mágico de Fundo (Azul Bebê Neon saindo do nome) -->
+                    <div style="position: absolute; width: 110px; height: 35px; background: #38bdf8; border-radius: 50%; filter: blur(12px); opacity: 0.15; z-index: 1; pointer-events: none; transition: 0.3s;"></div>
+                    
+                    <span style="font-size: 7px; color: var(--text-muted); font-weight: 800; letter-spacing: 2px; position: relative; z-index: 2; margin-bottom: 2px;">DEVELOPED BY</span>
+                    <span style="font-size: 11px; font-weight: 900; color: #ffffff; text-shadow: 0 0 10px #7dd3fc, 0 0 20px #38bdf8; position: relative; z-index: 2; font-family: 'Courier New', Courier, monospace; letter-spacing: 0.9px;">
+                        RICARDO LIMA
+                    </span>
+                </div>
+
+            </div>
+        </aside>
+
+
+        <!-- Conteúdo Principal (LAYOUT COCKPIT DEFINITIVO - NÍVEL SÊNIOR) -->
+        <main class="main-content" style="display: flex; flex-direction: column; height: 100vh; overflow: hidden; padding-bottom: 15px; box-sizing: border-box;">
+            
+            <!-- CABEÇALHO (Compacto e Elegante) -->
+            <div class="hero-premium" style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; flex-shrink: 0; flex-wrap: wrap; gap: 15px;">
+                <div class="hero-left">
+                    <h1 style="font-size: 22px; margin-bottom: 2px;">Auditoria e Fluxo de <span class="text-gradient">Refeições</span></h1>
+                    <p style="font-size: 12px; margin: 0; color: var(--text-muted);">Monitoramento de faturamento e divergências (Lotes Control iD).</p>
+                </div>
+                
+                <div class="hero-right" style="display: flex; gap: 12px; align-items: center; position: relative;">
+            
+            <!-- MODO TV -->
+            <button class="glow-hover" onclick="toggleTVMode()" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(59, 130, 246, 0.4); color: white; cursor: pointer; padding: 0 16px; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; height: 38px; box-sizing: border-box; transition: 0.2s;">
+                <span class="material-icons-round text-neon-blue" style="font-size: 15px;">tv</span> 
+                <span style="font-size: 11px; font-weight: 800; letter-spacing: 1px;">MODO TV</span>
+            </button>
+        
+            <!-- SELECIONADOR DE MÊS (JÁ INICIA NO LOTE DE JULHO 2025) -->
+            <div class="custom-dropdown" id="mes-dropdown-container" style="height: 38px; position: relative;">
+                <div class="dropdown-header glow-hover" onclick="event.stopPropagation(); toggleDropdownMes();" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 8px; padding: 0 16px; display: flex; align-items: center; gap: 8px; height: 100%; box-sizing: border-box; cursor: pointer; transition: 0.2s;">
+                    <span class="material-icons-round text-neon-blue" style="font-size: 15px;">calendar_month</span>
+                    <span id="mes-selecionado-texto" style="font-weight: 700; font-size: 11px; color: white;">Julho 2025</span>
+                    <span class="material-icons-round text-muted" style="font-size: 15px; pointer-events: none;">expand_more</span>
+                </div>
+                <div class="dropdown-list" id="mes-lista" style="top: calc(100% + 5px); right: 0; left: auto; width: 190px; border: 1px solid rgba(59, 130, 246, 0.5); z-index: 999999;"></div>
+                <input type="hidden" id="mes-filtro-dashboard" value="2025-07">
+            </div>
+            
+        </div>
+        </div>
+        
+
+            <!-- ESTRUTURA PRINCIPAL: ESQUERDA (Cards+Gráfico+IA) | DIREITA (Faturamento) -->
+            <div style="display: grid; grid-template-columns: 1.8fr 1fr; gap: 15px; flex: 1; min-height: 0;">
+                
+                <!-- ==========================================
+                     COLUNA ESQUERDA 
+                     ========================================== -->
+                <div style="display: flex; flex-direction: column; gap: 15px; min-width: 0; min-height: 0;">
+                    
+                    <!-- OS 3 INDICADORES (INTERATIVOS COM DRILL-DOWN DE AUDITORIA) -->
+                    <section style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; flex-shrink: 0;">
+                        <div id="kpi-card-total" onclick="filtrarPorKpiTopo('todos')" class="glass-card destaque-card glow-hover" style="padding: 12px 15px; min-width: 0; cursor: pointer; transition: all 0.2s;">
+                            <div class="card-header" style="margin-bottom: 2px;">
+                                <span class="material-icons-round text-gradient-icon" style="font-size: 15px;">restaurant</span>
+                                <h3 style="font-size: 10px; white-space: nowrap;">Total Consumido</h3>
+                                <span class="smart-tag help-icon-vip" data-wrap="true" data-valor="🛡️ Refeições únicas validadas (batidas duplicadas já bloqueadas pelo Firewall). Clique para exibir todas." style="margin-left: auto;"><span class="material-icons-round">help_outline</span></span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <h2 id="total-refeicoes" class="text-shadow" style="font-size: 24px; margin: 0;">0</h2>
+                                <div id="trend-total" style="display: none;"></div>
+                            </div>
+                        </div>
+                        
+                        <div id="kpi-card-horario" onclick="filtrarPorKpiTopo('atipicos')" class="glass-card glow-hover-yellow" style="padding: 12px 15px; min-width: 0; cursor: pointer; transition: all 0.2s;">
+                            <div class="card-header" style="margin-bottom: 2px;">
+                                <span class="material-icons-round text-yellow" style="font-size: 15px;">warning_amber</span>
+                                <h3 style="font-size: 10px; white-space: nowrap;">Atípicos (Fora Hor.)</h3>
+                                <span class="smart-tag help-icon-vip" data-wrap="true" data-valor="⏰ Acessos fora da janela de SLA. Regra de Negócio: tarifados proporcionalmente pela faixa horária do respectivo contrato. Clique para filtrar." style="margin-left: auto;"><span class="material-icons-round">help_outline</span></span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <h2 id="alertas-horario" class="text-yellow" style="font-size: 24px; margin: 0;">0</h2>
+                            </div>
+                        </div>
+
+                        <div id="kpi-card-feriado" onclick="filtrarPorKpiTopo('plantoes')" class="glass-card glow-hover-blue" style="padding: 12px 15px; min-width: 0; cursor: pointer; transition: all 0.2s;">
+                            <div class="card-header" style="margin-bottom: 2px;">
+                                <span class="material-icons-round text-neon-blue" style="font-size: 15px;">event_busy</span>
+                                <h3 style="font-size: 10px; white-space: nowrap;">Plantões (Dom/Fer)</h3>
+                                <span class="smart-tag help-icon-vip" data-wrap="true" data-valor="📅 Clique neste card para filtrar apenas empresas com consumo em Domingos e Feriados." style="margin-left: auto;"><span class="material-icons-round">help_outline</span></span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <h2 id="alertas-feriado" class="text-neon-blue" style="font-size: 24px; margin: 0;">0</h2>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- GRÁFICO (Efeito Mola) -->
+                    <div class="glass-card glow-hover" style="padding: 15px; display: flex; flex-direction: column; flex: 1; min-height: 0; min-width: 0; position: relative;">
+                        <div class="card-header" style="justify-content: space-between; margin-bottom: 10px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="material-icons-round text-neon-purple" style="font-size: 16px;">stacked_line_chart</span>
+                                <h3 style="font-size: 12px;">Horários de Pico (Rampa)</h3>
+                            </div>
+                            <div id="velocimetro-rampa" class="speedometer-badge" style="display: none; padding: 4px 10px;">
+                                <span class="material-icons-round" style="font-size: 12px;">speed</span>
+                                <span id="pico-texto" style="font-size: 10px;">Calculando...</span>
+                            </div>
+                        </div>
+                        
+                    <div id="grafico-vazio" style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; width: 100%;">
+                    <span class="material-icons-round" style="font-size: 36px; opacity: 0.2; margin-bottom: 8px;">insights</span>
+                    <span style="font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px;">Aguardando importação do mês...</span>
+                </div>
+
+                        <div style="position: relative; width: 100%; height: 100%; min-height: 160px; flex: 1;">
+                            <canvas id="graficoPico" style="display: none; width: 100%; height: 100%;"></canvas>
+                        </div>
+                        </div>
+
+
+                    <!-- INTELIGÊNCIA ARTIFICIAL (ALTURA CALIBRADA ZERO CORTE) -->
+                    <div class="glass-card" style="flex-shrink: 0; background: linear-gradient(90deg, rgba(16, 185, 129, 0.05), rgba(59, 130, 246, 0.05)); border: 1px solid rgba(16, 185, 129, 0.3); padding: 10px 15px; display: flex; align-items: center; gap: 12px; min-width: 0; height: 80px; max-height: 80px; box-sizing: border-box;">
+                        <span class="material-icons-round text-neon-green" style="font-size: 24px; animation: pulse 2s infinite; flex-shrink: 0;">auto_awesome</span>
+                        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-width: 0; height: 100%;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                <span style="font-size: 9px; background: var(--neon-green); color: black; padding: 2px 6px; border-radius: 4px; font-weight: 900; letter-spacing: 1px;">FORECAST AI</span>
+                            </div>
+                            <p id="ia-texto" style="font-family: 'Courier New', Courier, monospace; font-size: 11px; color: #a7f3d0; margin: 0; line-height: 1.45; min-height: 34px; max-height: 36px; overflow: hidden;"></p>
+                        </div>
+                    </div>
+               </div>
+                 
+        <!-- COLUNA DIREITA: FATURAMENTO E EXTRAS -->
+    <div class="glass-card finance-card glow-hover" style="padding: 15px; display: flex; flex-direction: column; height: 100%; min-height: 0;">
+        
+        <!-- CABEÇALHO -->
+        <div class="card-header" style="margin-bottom: 10px; border-bottom: 1px solid rgba(16, 185, 129, 0.2); padding-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+            <span class="material-icons-round text-neon-green" style="font-size: 16px;">account_balance_wallet</span>
+            <h3 style="font-size: 13px; margin: 0; color: white;">Faturamento Detalhado</h3>
+        </div>
+
+
+        <!-- LISTA DE EMPRESAS (CORRIGIDO PARA ZERO OVERFLOW) -->
+        <div id="faturamento-empresas" style="flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; overflow-y: auto; overflow-x: hidden; padding-right: 4px;">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--text-muted); width: 100%; height: 100%;">
+                <span class="material-icons-round" style="font-size: 28px; opacity: 0.2; margin-bottom: 8px;">receipt_long</span>
+                <span style="font-size: 11px; color: var(--text-muted);">Aguardando importação do mês...</span>
+            </div>
+        </div>
+
+        <!-- CALCULADORA DE EXTRAS -->
+        <div id="box-total-global" style="background: rgba(0,0,0,0.4); border-radius: 8px; padding: 10px 12px; margin-top: 8px; border: 1px dashed rgba(16, 185, 129, 0.3); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-size: 8px; color: var(--text-muted); font-weight: 800; letter-spacing: 1px;">(+) ADICIONAIS / GLOSAS</span>
+            </div>
+            
+            <!-- Lista de Adicionais -->
+            <div id="lista-adicionais" style="min-height: 20px; max-height: 64px; overflow-y: auto; overflow-x: hidden; display: block; padding-right: 4px; margin-bottom: 8px;">
+            <div style="text-align: center; padding: 5px; color: var(--text-muted); font-size: 10px;">Aguardando importação do mês...</div>
+        </div>
+
+            <!-- Total -->
+            <div class="finance-total" style="padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.15); display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 10px; color: white; font-weight: 700;">TOTAL LÍQUIDO</span>
+                <strong id="fat-total" class="text-neon-green glow-text" style="font-size: 20px;">R$ 0,00</strong>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+        </main>
+        </div>
+
+    <!-- COMMAND CENTER 4XL (MOTOR DE PRECIFICAÇÃO) -->
+    <div id="painel-config" class="central-modal-4xl" style="max-width: 1100px; width: 95%;">
+        
+        <!-- Cabeçalho Premium -->
+        <div class="drawer-header" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding: 20px 30px; background: rgba(0,0,0,0.3); border-radius: 20px 20px 0 0; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue)); padding: 10px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(168,85,247,0.4);">
+                    <span class="material-icons-round" style="color: white; font-size: 22px;">account_tree</span>
+                </div>
+                <div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <h2 style="font-size: 18px; font-weight: 800; margin: 0; color: white;">Motor de Precificação Dinâmica</h2>
+                        <span style="background: rgba(16, 185, 129, 0.1); color: var(--neon-green); padding: 3px 8px; border-radius: 6px; font-size: 9px; font-weight: 800; letter-spacing: 1px; border: 1px solid rgba(16, 185, 129, 0.3); display: flex; align-items: center; gap: 4px;"><span class="material-icons-round" style="font-size: 12px;">cloud_done</span> SYNC ATIVADO</span>
+                    </div>
+                    <p style="color: var(--neon-blue); font-size: 11px; font-weight: 600; margin: 2px 0 0 0; letter-spacing: 1px;">CENTRAL DE REGRAS DE NEGÓCIOS</p>
+                </div>
+            </div>
+            <button class="btn-close" onclick="fecharConfiguracoes()" style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 50%; border: none; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'"><span class="material-icons-round" style="color: white;">close</span></button>
+        </div>
+
+        <!-- GRID DE 3 COLUNAS ALINHADAS PERFEITAMENTE (SEM SCROLL) -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 20px 30px; align-items: stretch;">
+
+            <!-- ==================== COLUNA 1: ULTRAGAZ ==================== -->
+            <div style="background: linear-gradient(180deg, rgba(59, 130, 246, 0.05) 0%, rgba(0,0,0,0.4) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.05);">
+                <!-- Header -->
+                <div style="display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(59, 130, 246, 0.2); padding-bottom: 10px; margin-bottom: 15px;">
+                    <div style="background: rgba(59, 130, 246, 0.1); padding: 6px; border-radius: 6px; display: flex;">
+                        <span class="material-icons-round" style="color: var(--neon-blue); font-size: 18px;">local_fire_department</span>
+                    </div>
+                    <h3 style="color: white; font-size: 12px; font-weight: 800; margin: 0; letter-spacing: 1px;">CONTRATO ULTRAGAZ</h3>
+                </div>
+
+                <!-- Dias Normais -->
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                    <div style="width: 5px; height: 5px; border-radius: 50%; background: var(--text-muted);"></div>
+                    <span style="font-size: 9px; color: var(--text-muted); font-weight: 800; letter-spacing: 1px;">DIAS NORMAIS</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: var(--text-muted); font-weight: 800;">DESJEJUM</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: var(--text-muted); font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="7.00" id="u-n-desjejum" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: var(--text-muted); font-weight: 800;">ALMOÇO</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: var(--text-muted); font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="20.00" id="u-n-almoco" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: var(--text-muted); font-weight: 800;">LANCHE</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: var(--text-muted); font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="7.00" id="u-n-lanche" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: var(--text-muted); font-weight: 800;">JANTAR</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: var(--text-muted); font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="20.00" id="u-n-jantar" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                </div>
+
+                <!-- Divisor Flexível com Bolo -->
+                <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 8px; margin: 15px 0;">
+                    <div style="flex: 1; height: 1px; background: rgba(236, 72, 153, 0.3);"></div>
+                    <span class="material-icons-round" style="color: #ec4899; font-size: 16px;">cake</span>
+                    <div style="flex: 1; height: 1px; background: rgba(236, 72, 153, 0.3);"></div>
+                </div>
+
+                <!-- Aniversariantes -->
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                    <div style="width: 5px; height: 5px; border-radius: 50%; background: #ec4899; box-shadow: 0 0 6px #ec4899;"></div>
+                    <span style="font-size: 9px; color: #ec4899; font-weight: 800; letter-spacing: 1px;">ANIVERSARIANTES</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div style="background: rgba(236, 72, 153, 0.05); border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: #fbcfe8; font-weight: 800;">DESJEJUM</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: #ec4899; font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="10.00" id="u-e-desjejum" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                    <div style="background: rgba(236, 72, 153, 0.05); border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: #fbcfe8; font-weight: 800;">ALMOÇO</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: #ec4899; font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="25.00" id="u-e-almoco" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                    <div style="background: rgba(236, 72, 153, 0.05); border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: #fbcfe8; font-weight: 800;">LANCHE</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: #ec4899; font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="10.00" id="u-e-lanche" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                    <div style="background: rgba(236, 72, 153, 0.05); border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: #fbcfe8; font-weight: 800;">JANTAR</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: #ec4899; font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="25.00" id="u-e-jantar" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== COLUNA 2: TERCEIROS ==================== -->
+            <div style="background: linear-gradient(180deg, rgba(16, 185, 129, 0.05) 0%, rgba(0,0,0,0.4) 100%); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; box-shadow: inset 0 0 20px rgba(16, 185, 129, 0.05);">
+                <!-- Header -->
+                <div style="display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(16, 185, 129, 0.2); padding-bottom: 10px; margin-bottom: 15px;">
+                    <div style="background: rgba(16, 185, 129, 0.1); padding: 6px; border-radius: 6px; display: flex;">
+                        <span class="material-icons-round" style="color: var(--neon-green); font-size: 18px;">business</span>
+                    </div>
+                    <h3 style="color: white; font-size: 12px; font-weight: 800; margin: 0; letter-spacing: 1px;">CONTRATO PARCEIROS</h3>
+                </div>
+
+                <!-- Dias Normais -->
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                    <div style="width: 5px; height: 5px; border-radius: 50%; background: var(--text-muted);"></div>
+                    <span style="font-size: 9px; color: var(--text-muted); font-weight: 800; letter-spacing: 1px;">DIAS NORMAIS</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: var(--text-muted); font-weight: 800;">DESJEJUM</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: var(--text-muted); font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="7.00" id="o-n-desjejum" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: var(--text-muted); font-weight: 800;">ALMOÇO</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: var(--text-muted); font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="20.00" id="o-n-almoco" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: var(--text-muted); font-weight: 800;">LANCHE</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: var(--text-muted); font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="7.00" id="o-n-lanche" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: var(--text-muted); font-weight: 800;">JANTAR</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: var(--text-muted); font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="20.00" id="o-n-jantar" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                </div>
+
+                <!-- Divisor Flexível com Bolo -->
+                <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 8px; margin: 15px 0;">
+                    <div style="flex: 1; height: 1px; background: rgba(236, 72, 153, 0.3);"></div>
+                    <span class="material-icons-round" style="color: #ec4899; font-size: 16px;">cake</span>
+                    <div style="flex: 1; height: 1px; background: rgba(236, 72, 153, 0.3);"></div>
+                </div>
+
+                <!-- Aniversariantes -->
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                    <div style="width: 5px; height: 5px; border-radius: 50%; background: #ec4899; box-shadow: 0 0 6px #ec4899;"></div>
+                    <span style="font-size: 9px; color: #ec4899; font-weight: 800; letter-spacing: 1px;">ANIVERSARIANTES</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div style="background: rgba(236, 72, 153, 0.05); border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: #fbcfe8; font-weight: 800;">DESJEJUM</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: #ec4899; font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="10.00" id="o-e-desjejum" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                    <div style="background: rgba(236, 72, 153, 0.05); border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: #fbcfe8; font-weight: 800;">ALMOÇO</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: #ec4899; font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="30.00" id="o-e-almoco" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                    <div style="background: rgba(236, 72, 153, 0.05); border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: #fbcfe8; font-weight: 800;">LANCHE</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: #ec4899; font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="10.00" id="o-e-lanche" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                    <div style="background: rgba(236, 72, 153, 0.05); border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 8px; padding: 6px 10px;">
+                        <span style="font-size: 9px; color: #fbcfe8; font-weight: 800;">JANTAR</span>
+                        <div style="display: flex; align-items: center; margin-top: 4px;"><span style="color: #ec4899; font-size: 11px; margin-right: 4px; font-weight: 800;">R$</span><input type="number" step="0.01" min="0" value="30.00" id="o-e-jantar" style="background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 14px; font-weight: bold;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== COLUNA 3: REGRAS E EVENTO ==================== -->
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                
+                <!-- SLA -->
+                <div style="background: linear-gradient(180deg, rgba(168, 85, 247, 0.05) 0%, rgba(0,0,0,0.4) 100%); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 16px; padding: 18px; box-shadow: inset 0 0 20px rgba(168, 85, 247, 0.05); display: flex; flex-direction: column; flex-grow: 1;">
+                    <div style="display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(168, 85, 247, 0.2); padding-bottom: 10px; margin-bottom: 10px;">
+                        <div style="background: rgba(168, 85, 247, 0.1); padding: 6px; border-radius: 6px; display: flex;">
+                            <span class="material-icons-round" style="color: var(--neon-purple); font-size: 18px;">rule</span>
+                        </div>
+                        <h3 style="color: white; font-size: 12px; font-weight: 800; margin: 0; letter-spacing: 1px;">MAPEAMENTO DE TURNOS</h3>
+                        <span class="smart-tag help-icon-vip" data-wrap="true" data-valor="⚙️ Batidas fora destes intervalos são auditadas automaticamente como Atípicos (Fora do Horário)." style="margin-left: auto;"><span class="material-icons-round">help_outline</span></span>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(168, 85, 247, 0.28); border-radius: 8px; padding: 5px 10px; margin-bottom: 12px;">
+                        <span class="smart-tag" data-wrap="true" data-valor="⏱️ Vista Grossa Operacional: clique em -15m (abertura antecipada), +15m (atraso pós-rampa) ou 0 min (horário estrito)." style="background: transparent; border: none; padding: 0; font-size: 8.5px; color: #d8b4fe; font-weight: 800; letter-spacing: 0.5px; cursor: help;">⏱️ TOLERÂNCIA SLA:</span>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <button type="button" id="btn-tol-zero" onclick="alternarToleranciaSla('zero')" class="smart-tag" data-valor="🔒 Sem tolerância (Horário 100% estrito)" style="padding: 3px 7px; font-size: 8.5px; font-weight: 900; border-radius: 5px; cursor: pointer;">0 min</button>
+                            <button type="button" id="btn-tol-antes" onclick="alternarToleranciaSla('antes')" class="smart-tag" data-valor="⏪ Tolerar até 15 min ANTES de abrir o turno" style="padding: 3px 7px; font-size: 8.5px; font-weight: 900; border-radius: 5px; cursor: pointer;">-15 min</button>
+                            <button type="button" id="btn-tol-depois" onclick="alternarToleranciaSla('depois')" class="smart-tag" data-valor="⏩ Tolerar até 15 min APÓS fechar o turno" style="padding: 3px 7px; font-size: 8.5px; font-weight: 900; border-radius: 5px; cursor: pointer;">+15 min</button>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; gap: 8px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 12px;">
+                            <span style="font-size: 10px; color: var(--text-muted); font-weight: 800;">DESJEJUM</span>
+                            <div style="display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 4px 8px;">
+                                <input type="time" id="hora-desjejum-i" value="05:00" style="background: transparent; border: none; color: white; font-size: 12px; font-family: monospace; outline: none; text-align: center; color-scheme: dark;">
+                                <span style="color: var(--neon-purple); font-size: 9px; font-weight: 800;">ATÉ</span>
+                                <input type="time" id="hora-desjejum-f" value="09:00" style="background: transparent; border: none; color: white; font-size: 12px; font-family: monospace; outline: none; text-align: center; color-scheme: dark;">
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 12px;">
+                            <span style="font-size: 10px; color: var(--text-muted); font-weight: 800;">ALMOÇO</span>
+                            <div style="display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 4px 8px;">
+                                <input type="time" id="hora-almoco-i" value="11:00" style="background: transparent; border: none; color: white; font-size: 12px; font-family: monospace; outline: none; text-align: center; color-scheme: dark;">
+                                <span style="color: var(--neon-purple); font-size: 9px; font-weight: 800;">ATÉ</span>
+                                <input type="time" id="hora-almoco-f" value="14:00" style="background: transparent; border: none; color: white; font-size: 12px; font-family: monospace; outline: none; text-align: center; color-scheme: dark;">
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 12px;">
+                            <span style="font-size: 10px; color: var(--text-muted); font-weight: 800;">LANCHE</span>
+                            <div style="display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 4px 8px;">
+                                <input type="time" id="hora-lanche-i" value="14:30" style="background: transparent; border: none; color: white; font-size: 12px; font-family: monospace; outline: none; text-align: center; color-scheme: dark;">
+                                <span style="color: var(--neon-purple); font-size: 9px; font-weight: 800;">ATÉ</span>
+                                <input type="time" id="hora-lanche-f" value="17:30" style="background: transparent; border: none; color: white; font-size: 12px; font-family: monospace; outline: none; text-align: center; color-scheme: dark;">
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 12px;">
+                            <span style="font-size: 10px; color: var(--text-muted); font-weight: 800;">JANTAR</span>
+                            <div style="display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 4px 8px;">
+                                <input type="time" id="hora-jantar-i" value="17:50" style="background: transparent; border: none; color: white; font-size: 12px; font-family: monospace; outline: none; text-align: center; color-scheme: dark;">
+                                <span style="color: var(--neon-purple); font-size: 9px; font-weight: 800;">ATÉ</span>
+                                <input type="time" id="hora-jantar-f" value="20:00" style="background: transparent; border: none; color: white; font-size: 12px; font-family: monospace; outline: none; text-align: center; color-scheme: dark;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FESTA -->
+                <div style="background: linear-gradient(180deg, rgba(236, 72, 153, 0.05) 0%, rgba(0,0,0,0.4) 100%); border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 16px; padding: 18px; box-shadow: inset 0 0 20px rgba(236, 72, 153, 0.05);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="background: rgba(236, 72, 153, 0.1); padding: 6px; border-radius: 6px; display: flex;">
+                                <span class="material-icons-round" style="color: #ec4899; font-size: 18px;">celebration</span>
+                            </div>
+                            <h3 style="color: white; font-size: 12px; font-weight: 800; margin: 0; letter-spacing: 1px;">DATA FESTIVA</h3>
+                            <span class="smart-tag help-icon-vip" data-wrap="true" data-valor="🎂 Em branco = Automático (puxa o último dia útil do mês). Se escolher uma data, clique no ✕ para voltar ao automático."><span class="material-icons-round">help_outline</span></span>
+                        </div>
+                        <span id="badge-status-data-festiva" style="font-size: 8px; background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.35); padding: 2px 7px; border-radius: 6px; font-weight: 900; letter-spacing: 0.5px;">AUTO SLA</span>
+                    </div>
+                    <p style="font-size: 9px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.3;">Deixe em branco para cálculo automático ou fixe um dia manual.</p>
+                    
+                    <div onclick="const el=document.getElementById('data-evento-manual'); if(el && el._flatpickr) el._flatpickr.open(); else if(el) el.focus();" style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.5); border: 1px solid rgba(236, 72, 153, 0.35); border-radius: 8px; padding: 0 10px; gap: 8px; height: 42px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.borderColor='#ec4899'" onmouseout="this.style.borderColor='rgba(236, 72, 153, 0.35)'">
+                        <span class="material-icons-round" style="color: #ec4899; font-size: 17px; flex-shrink: 0; pointer-events: none;">event</span>
+                        <input type="text" id="data-evento-manual" class="flatpickr-input" placeholder="Automático (Último dia útil)" maxlength="10" style="background: transparent; border: none; color: #ffffff; width: 100%; height: 100%; padding: 0; outline: none; font-size: 11px; font-weight: 700; text-align: left; cursor: pointer;">
+                        <button type="button" id="btn-limpar-data-festiva" class="smart-tag" data-valor="🔄 Limpar seleção e voltar para o Automático" onclick="event.stopPropagation(); limparDataFestiva()" style="display: none; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.5); color: #fca5a5; border-radius: 6px; padding: 3px 7px; font-size: 10px; font-weight: 900; cursor: pointer; flex-shrink: 0;">✕</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+
+        <!-- RODAPÉ REFINADO E COMPACTO (COM RESTAURAR SLA E SIMULADOR) -->
+        <div class="drawer-footer" style="padding: 14px 30px; border-top: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.3); display: flex; justify-content: space-between; align-items: center; border-radius: 0 0 24px 24px; gap: 10px;">
+            <div style="display: flex; gap: 8px;">
+                <button style="height: 40px; padding: 0 14px; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; border-radius: 8px; background: rgba(59, 130, 246, 0.08); cursor: pointer;" onclick="exportarBackup()" class="smart-tag" data-valor="📥 Baixar arquivo .JSON com todas as regras atuais">
+                    <span class="material-icons-round" style="font-size: 15px;">save_alt</span> BACKUP JSON
+                </button>
+                <button style="height: 40px; padding: 0 14px; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; border-radius: 8px; background: rgba(16, 185, 129, 0.08); cursor: pointer;" onclick="document.getElementById('input-restaurar-json').click()" class="smart-tag" data-valor="📤 Subir arquivo .JSON para restaurar preços e horários">
+                    <span class="material-icons-round" style="font-size: 15px;">settings_backup_restore</span> RESTAURAR
+                </button>
+                <input type="file" id="input-restaurar-json" accept=".json" style="display: none;" onchange="importarBackupJSON(event)">
+            </div>
+
+            <div id="resumo-ticket-medio-modal" class="smart-tag" data-valor="📊 Ponderação Mensal (21d Normais + 1d Evento): 50% Almoço, 25% Desjejum, 15% Lanche e 10% Jantar" style="display: flex; align-items: center; gap: 12px; background: rgba(16, 185, 129, 0.06); border: 1px solid rgba(16, 185, 129, 0.25); padding: 8px 16px; border-radius: 10px; cursor: help;">
+                <span style="font-size: 9px; color: var(--text-muted); font-weight: 800; letter-spacing: 0.5px;">TICKET MÉDIO PONDERADO:</span>
+                <strong id="lbl-ticket-medio-ug" style="font-size: 12px; color: #38bdf8; font-weight: 900;">Ultragaz: R$ 14,99</strong>
+                <span style="color: rgba(255,255,255,0.2);">•</span>
+                <strong id="lbl-ticket-medio-parc" style="font-size: 12px; color: #10b981; font-weight: 900;">Parceiros: R$ 15,13</strong>
+            </div>
+            
+            <button style="height: 40px; padding: 0 22px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 11px; border-radius: 8px; background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue)); color: white; font-weight: 800; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(168,85,247,0.3); border: none; cursor: pointer;" onclick="salvarConfiguracoes()">
+                SALVAR REGRAS <span class="material-icons-round" style="font-size: 16px;">check_circle</span>
+            </button>
+        </div>
+    </div>
+
+<!-- CENTRAL DE RELATÓRIOS (MODAL) -->
+    <div id="modal-relatorios" class="settings-drawer glass-panel" style="width: 460px; right: -500px; display: flex; flex-direction: column;">
+        <div class="drawer-header" style="padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="material-icons-round" style="color: #ec4899; font-size: 20px;">auto_graph</span>
+                <div>
+                    <h2 style="font-size: 16px; margin: 0;">Central de Relatórios</h2>
+                    <span style="font-size: 9px; color: #ec4899; font-weight: 800; letter-spacing: 0.8px;">EXPORTAÇÃO AUDITADA B2B</span>
+                </div>
+            </div>
+            <button class="btn-close" onclick="fecharModais()" style="padding: 5px;"><span class="material-icons-round" style="font-size: 18px;">close</span></button>
+        </div>
+        
+        <div class="drawer-content" style="padding: 14px 20px; display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden;">
+            
+            <label style="color: var(--text-muted); font-size: 9.5px; margin-bottom: 5px; display: block; letter-spacing: 1px; font-weight: 800; flex-shrink: 0;">MOTOR DE COMPILAÇÃO OFICIAL</label>
+            <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.3); padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: inset 0 0 10px rgba(16, 185, 129, 0.08); flex-shrink: 0;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="material-icons-round" style="color: var(--neon-green); font-size: 20px;">verified_user</span>
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="color: white; font-size: 11.5px; font-weight: 800;">Boletim PDF & Planilha (.XLSX)</span>
+                        <span style="color: var(--neon-green); font-size: 8.5px; font-weight: 800; letter-spacing: 0.5px;">ASSINATURA HASH SHA-256 + 3 ABAS EXECUTIVAS</span>
+                    </div>
+                </div>
+                <span style="font-size: 8px; background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); padding: 2px 7px; border-radius: 6px; font-weight: 900;">ATIVO</span>
+            </div>
+
+            <!-- LISTA DE EMPRESAS COM CONTADOR DINÂMICO -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; flex-shrink: 0;">
+                <label style="color: var(--text-muted); font-size: 9.5px; letter-spacing: 1px; font-weight: 800;">EMPRESAS INCLUÍDAS (MÚLTIPLA ESCOLHA)</label>
+                <span id="contador-empresas-relatorio" style="font-size: 9px; color: var(--neon-green); font-weight: 800;">TODAS SELECIONADAS</span>
+            </div>
+            <div id="container-multi-empresas" style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; max-height: 225px; overflow-y: auto; overflow-x: hidden; padding: 12px 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; margin-bottom: 14px; flex-shrink: 0;">
+                <!-- Checkboxes dinâmicos do mês ativo injetados via JS -->
+            </div>
+
+            <!-- PERÍODO DE FATURAMENTO (SEMPRE VISÍVEL COM FLATPICKR) -->
+            <label style="color: var(--text-muted); font-size: 9.5px; margin-bottom: 5px; display: block; letter-spacing: 1px; font-weight: 800; flex-shrink: 0;">PERÍODO DE FATURAMENTO</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; flex-shrink: 0;">
+                <div>
+                    <span style="color: var(--text-muted); font-size: 8.5px; margin-bottom: 3px; display: block; font-weight: 700;">DATA INICIAL</span>
+                    <input type="text" id="data-inicio-relatorio" class="premium-input flatpickr-input" placeholder="DD/MM/AAAA" style="width: 100%; padding: 9px 12px; font-size: 11.5px; cursor: pointer;">
+                </div>
+                <div>
+                    <span style="color: var(--text-muted); font-size: 8.5px; margin-bottom: 3px; display: block; font-weight: 700;">DATA FINAL</span>
+                    <input type="text" id="data-fim-relatorio" class="premium-input flatpickr-input" placeholder="DD/MM/AAAA" style="width: 100%; padding: 9px 12px; font-size: 11.5px; cursor: pointer;">
+                </div>
+            </div>
+            
+            <div style="flex-shrink: 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <label style="color: var(--text-muted); font-size: 9.5px; font-weight: 800; letter-spacing: 0.5px;">DIÁRIO DE BORDO / OBSERVAÇÕES</label>
+                    <span id="contador-obs-relatorio" style="font-size: 8.5px; color: #64748b; font-weight: 700;">0 / 240 CARACT.</span>
+                </div>
+                <textarea id="obs-relatorio" maxlength="240" oninput="atualizarContadorDiarioBordo(this)" class="premium-input" rows="4" placeholder="Ex: Queda de energia no dia 12 reduziu 10 almoços..." style="width: 100%; min-height: 78px; padding: 10px 12px; font-size: 11px; line-height: 1.45; resize: none; box-sizing: border-box; transform: translateZ(0); will-change: contents; contain: content; transition: border-color 0.15s ease;"></textarea>
+            </div>
+
+            <!-- FUNDO MESCLADO SUTIL COMPACTO -->
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; min-height: 48px; margin-top: 8px; pointer-events: none; user-select: none; overflow: hidden; border-radius: 12px; background: radial-gradient(circle at center, rgba(236, 72, 153, 0.04) 0%, transparent 70%);">
+                <span class="material-icons-round" style="font-size: 22px; color: rgba(236, 72, 153, 0.14); margin-bottom: 2px;">verified_user</span>
+                <span style="font-size: 7.5px; font-weight: 900; letter-spacing: 2px; color: rgba(255, 255, 255, 0.15);">OFFICIAL AUDIT ENGINE • SHA-256 SEAL</span>
+            </div>
+            
+        </div>
+        
+        <div class="drawer-footer" style="padding: 14px 20px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 8px; flex-shrink: 0;">
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <button class="btn-premium" style="flex: 1; justify-content: center; background: linear-gradient(135deg, #ec4899, #a855f7); border: 1px solid rgba(236, 72, 153, 0.5); color: #ffffff; padding: 11px 10px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.8px; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.25); transition: all 0.2s ease; white-space: nowrap;" onclick="executarExportacao()" onmouseover="this.style.filter='brightness(1.15)'; this.style.transform='translateY(-1px)';" onmouseout="this.style.filter='brightness(1)'; this.style.transform='translateY(0)';">
+                    EMITIR FATURA (PDF) <span class="material-icons-round" style="font-size: 16px;">picture_as_pdf</span>
+                </button>
+                <button class="btn-premium smart-tag" data-wrap="true" data-valor="📦 Exportação Individual em Lote: Gera 1 PDF separado para cada empresa selecionada (isolando suas glosas/adicionais) e baixa todos juntos em um arquivo .ZIP." style="width: 122px; flex-shrink: 0; justify-content: center; background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(59, 130, 246, 0.35)); border: 1px solid rgba(168, 85, 247, 0.65); color: #f3e8ff; padding: 11px 8px; font-size: 10px; font-weight: 900; letter-spacing: 0.6px; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2); transition: all 0.2s ease; white-space: nowrap; gap: 5px;" onclick="exportarLotePdfsIndividuaisZip()" onmouseover="this.style.background='linear-gradient(135deg, #a855f7, #3b82f6)'; this.style.color='#ffffff'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(59, 130, 246, 0.35))'; this.style.color='#f3e8ff'; this.style.transform='translateY(0)';">
+                    LOTE .ZIP <span class="material-icons-round" style="font-size: 15px;">folder_zip</span>
+                </button>
+            </div>
+            <button class="btn-premium" style="width: 100%; justify-content: center; background: linear-gradient(135deg, rgba(16, 185, 129, 0.28), rgba(5, 150, 105, 0.45)); border: 1px solid #10b981; color: #ecfdf5; padding: 11px; font-size: 11px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); transition: all 0.2s ease;" onclick="exportarRelatorioExcel()" onmouseover="this.style.background='linear-gradient(135deg, #10b981, #059669)'; this.style.color='#050505'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='linear-gradient(135deg, rgba(16, 185, 129, 0.28), rgba(5, 150, 105, 0.45))'; this.style.color='#ecfdf5'; this.style.transform='translateY(0)';">
+                EXPORTAR PLANILHA (.XLSX) <span class="material-icons-round" style="font-size: 16px;">table_view</span>
+            </button>
+            <button class="btn-premium" style="width: 100%; justify-content: center; background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(217, 119, 6, 0.38)); border: 1px solid rgba(245, 158, 11, 0.65); color: #fef3c7; padding: 11px; font-size: 11px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15); transition: all 0.2s ease;" onclick="fecharModais(); exportarPdfDuplicidades();" onmouseover="this.style.background='linear-gradient(135deg, #f59e0b, #d97706)'; this.style.color='#050505'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(217, 119, 6, 0.38))'; this.style.color='#fef3c7'; this.style.transform='translateY(0)';">
+                LAUDO DE DUPLICIDADES (PDF) <span class="material-icons-round" style="font-size: 16px;">policy</span>
+            </button>
+        </div>
+    </div>
+    
+
+    <!-- TERMINAL UNIFICADO DE ORQUESTRAÇÃO AI & COMPILAÇÃO -->
+    <div id="modal-exportacao" class="overlay-hidden" style="z-index: 999999;"> 
+        <div class="glass-card" style="width: 540px; max-width: 92vw; margin: 14vh auto; background: rgba(8, 12, 20, 0.96); border: 1px solid rgba(168, 85, 247, 0.5); box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 35px rgba(168, 85, 247, 0.2); padding: 22px;">
+            <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="display: flex; gap: 5px;">
+                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444;"></span>
+                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b;"></span>
+                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981;"></span>
+                    </div>
+                    <h3 id="terminal-titulo" style="color: #e2e8f0; font-size: 11px; font-family: monospace; letter-spacing: 1px; margin: 0;">AI AGENT ORCHESTRATOR // PIPELINE v2.5</h3>
+                </div>
+                <span style="font-size: 9px; background: rgba(168, 85, 247, 0.2); color: #e9d5ff; border: 1px solid rgba(168, 85, 247, 0.4); padding: 2px 8px; border-radius: 4px; font-weight: 800; font-family: monospace;">CHAIN-OF-THOUGHT</span>
+            </div>
+            
+            <div id="terminal-logs" style="font-family: 'Courier New', Courier, monospace; font-size: 12px; color: #10b981; min-height: 150px; max-height: 220px; overflow-y: auto; line-height: 1.7; background: rgba(0,0,0,0.45); padding: 12px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                <!-- Logs dinâmicos injetados via JS -->
+            </div>
+            
+            <div style="margin-top: 16px; height: 5px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden;">
+                <div id="barra-progresso" style="width: 0%; height: 100%; background: linear-gradient(90deg, #a855f7, #3b82f6, #10b981); box-shadow: 0 0 12px #a855f7; transition: width 0.35s ease;"></div>
+            </div>
+        </div>
+    </div>
+    
+
+<div id="fatura-pdf-template" style="display: none; background: #ffffff; color: #0f172a; padding: 18px 24px; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; position: relative; overflow: hidden; width: 715px; max-width: 715px; margin: 0;">
+        <style>
+            #fatura-pdf-template, #fatura-pdf-template * {
+                letter-spacing: 0px !important;
+                word-spacing: 1.2px !important;
+                font-kerning: none !important;
+                font-variant-ligatures: none !important;
+                -webkit-font-smoothing: antialiased;
+            }
+            #fatura-pdf-template .material-icons-round {
+                letter-spacing: normal !important;
+                word-spacing: normal !important;
+            }
+        </style>
+
+        <!-- MARCA D'ÁGUA CENTRALIZADA VIA FLEXBOX (ZERO CORTE NAS BORDAS) -->
+        <div style="position: absolute; top: 80px; left: 0; right: 0; height: 520px; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 0; user-select: none; overflow: hidden;">
+            <span style="transform: rotate(-26deg); font-size: 36px; color: rgba(15, 23, 42, 0.035); font-weight: 900; white-space: nowrap; display: block;">
+                DOCUMENTO OFICIAL AUDITADO
+            </span>
+        </div>
+
+        <div style="position: relative; z-index: 1; width: 100%; box-sizing: border-box;">
+            <!-- BLOCO TOPO (CABEÇALHO + IA + 4 KPIs) -->
+            <div id="pdf-bloco-topo" style="width: 100%; box-sizing: border-box;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0f172a; padding-bottom: 10px; margin-bottom: 10px; width: 100%; box-sizing: border-box;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 36px; height: 36px; background: #0f172a; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <span class="material-icons-round" style="color: #10b981; font-size: 20px;">pie_chart</span>
+                        </div>
+                        <div>
+                            <h1 style="color: #0f172a; margin: 0; font-size: 19px; font-weight: 900;">Refeitório Inteligente</h1>
+                            <div style="display: flex; align-items: center; gap: 6px; margin-top: 2px;">
+                                <p style="margin: 0; color: #64748b; font-size: 9px; font-weight: 800; text-transform: uppercase;">Boletim de Medição Executivo B2B</p>
+                                <span style="color: #059669; border: 1px solid #10b981; padding: 1px 6px; border-radius: 4px; font-size: 8px; font-weight: 900; background: #ecfdf5; white-space: nowrap;">✓ SLA AUDITADO</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; background: #f8fafc; padding: 7px 14px; border-radius: 8px; border: 1px solid #cbd5e1; flex-shrink: 0; min-width: 195px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box;">
+                        <h2 style="margin: 0 0 3px 0; font-size: 12px; color: #0f172a; font-weight: 900; text-transform: uppercase; white-space: nowrap; text-align: center;" id="pdf-empresa-nome">EMPRESA</h2>
+                        <p style="margin: 0; color: #475569; font-size: 9.5px; font-weight: 700; white-space: nowrap; text-align: center;" id="pdf-data-emissao">Período: -- a --</p>
+                    </div>
+                </div>
+
+                <!-- FORECAST IA -->
+                <div style="border: 1px solid #e2e8f0; border-left: 4px solid #10b981; border-radius: 6px; padding: 8px 12px; margin-bottom: 10px; background: #f8fafc; width: 100%; box-sizing: border-box;">
+                    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 3px;">
+                        <span class="material-icons-round" style="color: #10b981; font-size: 13px;">auto_awesome</span>
+                        <h3 style="margin: 0; font-size: 8.5px; font-weight: 900; color: #0f172a; text-transform: uppercase;">Parecer Analítico Operacional (AI Engine)</h3>
+                    </div>
+                    <p id="pdf-forecast-ia" style="margin: 0; font-size: 9px; color: #334155; line-height: 1.45;"></p>
+                </div>
+                
+                <!-- 4 KPIs EXECUTIVOS -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px; width: 100%; box-sizing: border-box;">
+                    <div style="padding: 8px 12px; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; border-radius: 6px; background: #ffffff; box-sizing: border-box;">
+                        <span style="font-size: 7.5px; color: #64748b; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 2px;">Total Consumido</span>
+                        <span id="pdf-kpi-total" style="font-size: 18px; font-weight: 900; color: #0f172a; line-height: 1.1; display: block;">0</span>
+                    </div>
+                    <div style="padding: 8px 12px; border: 1px solid #e2e8f0; border-left: 4px solid #f59e0b; border-radius: 6px; background: #ffffff; box-sizing: border-box;">
+                        <span style="font-size: 7.5px; color: #64748b; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 2px;">Atípicos (Fora Hor.)</span>
+                        <span id="pdf-kpi-atipicos" style="font-size: 18px; font-weight: 900; color: #0f172a; line-height: 1.1; display: block;">0</span>
+                    </div>
+                    <div style="padding: 8px 12px; border: 1px solid #e2e8f0; border-left: 4px solid #3b82f6; border-radius: 6px; background: #ffffff; box-sizing: border-box;">
+                        <span style="font-size: 7.5px; color: #64748b; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 2px;">Plantões (Dom/Fer)</span>
+                        <span id="pdf-kpi-picos" style="font-size: 18px; font-weight: 900; color: #0f172a; line-height: 1.1; display: block;">0 Dias</span>
+                    </div>
+                    <div style="padding: 8px 12px; border: 1px solid #e2e8f0; border-left: 4px solid #8b5cf6; border-radius: 6px; background: #ffffff; box-sizing: border-box;">
+                        <span style="font-size: 7.5px; color: #64748b; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 2px;">Entidades Ativas</span>
+                        <span id="pdf-kpi-empresas" style="font-size: 18px; font-weight: 900; color: #0f172a; line-height: 1.1; display: block;">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTAINER DOS CARDS DAS EMPRESAS -->
+            <div id="pdf-container-empresas" style="width: 100%; box-sizing: border-box;"></div>
+
+            <!-- BLOCO UNIFICADO DE FECHAMENTO + ASSINATURAS -->
+            <div id="pdf-bloco-rodape-final" class="pdf-step-block" style="page-break-inside: avoid; break-inside: avoid; margin-top: 6px; width: 100%; box-sizing: border-box;">
+                <div style="display: flex; gap: 12px; align-items: stretch; width: 100%; box-sizing: border-box;">
+                    
+                    <!-- COLUNA ESQUERDA (56%): EXTRAS/GLOSAS -->
+                    <div style="width: 56%; display: flex; flex-direction: column; box-sizing: border-box;">
+                        <div style="border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; background: #ffffff; flex: 1; display: flex; flex-direction: column; width: 100%; box-sizing: border-box;">
+                            <div style="background: #f1f5f9; padding: 7px 10px; border-bottom: 1px solid #cbd5e1; display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; box-sizing: border-box;">
+                                <h3 style="color: #0f172a; margin: 0; font-size: 8.5px; font-weight: 900; text-transform: uppercase; display: flex; align-items: center; gap: 5px; white-space: nowrap;">
+                                    <span class="material-icons-round" style="color: #475569; font-size: 13px;">receipt_long</span>
+                                    Ocorrências Extras e Glosas Contratuais
+                                </h3>
+                                <span style="font-size: 7px; font-weight: 800; color: #64748b; text-transform: uppercase; white-space: nowrap; flex-shrink: 0;">Eventos do Período</span>
+                            </div>
+                            <div id="pdf-tabela-adicionais" style="padding: 8px 10px; display: flex; flex-direction: column; gap: 5px; flex: 1; justify-content: center; background: #f8fafc; width: 100%; box-sizing: border-box;"></div>
+                        </div>
+                    </div>
+
+                    <!-- COLUNA DIREITA (44%): QUADRO DE CONCILIAÇÃO FINANCEIRA PREMIUM -->
+                    <div style="width: 44%; border: 1px solid #cbd5e1; border-radius: 8px; background: #ffffff; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);">
+                        
+                        <!-- Topo Escuro -->
+                        <div style="background: #0f172a; padding: 7px 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box;">
+                            <span style="font-size: 8.5px; color: #ffffff; font-weight: 900; text-transform: uppercase; display: flex; align-items: center; gap: 5px; white-space: nowrap;">
+                                <span class="material-icons-round" style="color: #10b981; font-size: 13px;">account_balance_wallet</span>
+                                Conciliação Financeira
+                            </span>
+                            <span style="font-size: 7px; background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 1.5px 6px; border-radius: 4px; font-weight: 900; white-space: nowrap; flex-shrink: 0;">FECHAMENTO</span>
+                        </div>
+
+                        <!-- Corpo de Subtotais Estruturados (100% Alinhados) -->
+                        <div style="padding: 8px 12px; display: flex; flex-direction: column; gap: 6px; flex: 1; justify-content: center; width: 100%; box-sizing: border-box;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 6px 10px; border-radius: 6px; border: 1px solid #e2e8f0; width: 100%; box-sizing: border-box;">
+                                <div>
+                                    <span style="display: block; font-size: 9px; color: #0f172a; font-weight: 800;">Matriz de Refeições</span>
+                                    <span style="display: block; font-size: 7px; color: #64748b; font-weight: 600;">Consumo auditado por turno</span>
+                                </div>
+                                <span id="pdf-subtotal-ref" style="color: #0f172a; font-size: 11px; font-weight: 900; white-space: nowrap; flex-shrink: 0;">R$ 0,00</span>
+                            </div>
+
+                            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 6px 10px; border-radius: 6px; border: 1px solid #e2e8f0; width: 100%; box-sizing: border-box;">
+                                <div>
+                                    <span style="display: block; font-size: 9px; color: #0f172a; font-weight: 800;">Adicionais e Glosas</span>
+                                    <span style="display: block; font-size: 7px; color: #64748b; font-weight: 600;">Saldo de eventos contratuais</span>
+                                </div>
+                                <span id="pdf-subtotal-add" style="color: #0f172a; font-size: 11px; font-weight: 900; white-space: nowrap; flex-shrink: 0;">R$ 0,00</span>
+                            </div>
+                        </div>
+
+                        <!-- Rodapé Destacado Esmeralda -->
+                        <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-top: 1.5px solid #10b981; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box;">
+                            <div>
+                                <span style="display: block; font-size: 8px; color: #065f46; font-weight: 900; text-transform: uppercase;">Total Líquido</span>
+                                <span style="display: block; font-size: 7px; color: #047857; font-weight: 700;">Valor Final Auditado</span>
+                            </div>
+                            <span id="pdf-total-geral" style="font-size: 18px; font-weight: 900; color: #059669; white-space: nowrap; flex-shrink: 0;">R$ 0,00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DIÁRIO DE BORDO COMPACTO EM LARGURA TOTAL (NÃO ESTICA A CONCILIAÇÃO) -->
+                <div id="bloco-observacoes" style="display: none; margin-top: 8px; padding: 7px 12px; border: 1px solid #cbd5e1; border-left: 3.5px solid #0f172a; border-radius: 6px; background: #f8fafc; width: 100%; box-sizing: border-box;">
+                    <span style="display: block; color: #0f172a; font-size: 7.5px; font-weight: 900; text-transform: uppercase; margin-bottom: 2px;">📝 Diário de Bordo / Ressalvas de Auditoria:</span>
+                    <p id="pdf-texto-obs" style="margin: 0; font-size: 8.5px; color: #334155; line-height: 1.35; max-height: 36px; white-space: normal; word-break: break-all; overflow-wrap: anywhere; overflow: hidden;"></p>
+                </div>
+
+                <!-- ASSINATURAS E SELO DIGITAL -->
+                <div style="margin-top: 16px; display: flex; justify-content: space-between; gap: 24px; align-items: flex-end; width: 100%; box-sizing: border-box;">
+                    <div style="flex: 1; text-align: center;">
+                        <div style="border-top: 1px solid #94a3b8; padding-top: 5px; margin-bottom: 2px;"></div>
+                        <span style="display: block; font-size: 8.5px; color: #0f172a; font-weight: 900;">APROVAÇÃO GERENTE</span>
+                        <span style="display: block; font-size: 7.5px; color: #64748b;">SODEXO</span>
+                    </div>
+                    
+                    <div style="flex: 1.4; text-align: center; background: #f8fafc; padding: 6px 10px; border-radius: 8px; border: 1px dashed #cbd5e1; box-sizing: border-box;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 2px;">
+                            <span class="material-icons-round" style="color: #7e22ce; font-size: 13px;">verified_user</span>
+                            <span style="font-size: 7px; color: #475569; font-weight: 900; text-transform: uppercase;">Certificação Criptográfica SHA-256</span>
+                        </div>
+                        <span style="font-family: 'Courier New', monospace; color: #0f172a; font-weight: 900; font-size: 9px; display: block;" id="pdf-hash">DOC_ID: ---</span>
+                        <span id="pdf-timestamp" style="display: block; margin-top: 2px; font-size: 7px; color: #64748b; font-weight: 700; white-space: nowrap;"></span>
+                    </div>
+
+                    <div style="flex: 1; text-align: center;">
+                        <div style="border-top: 1px solid #94a3b8; padding-top: 5px; margin-bottom: 2px;"></div>
+                        <span style="display: block; font-size: 8.5px; color: #0f172a; font-weight: 900;">APROVAÇÃO DIRETORIA</span>
+                        <span style="display: block; font-size: 7.5px; color: #64748b;" id="pdf-assinatura-empresa">ULTRAGAZ</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+       <!-- ==============================================================
+         CENTRAL DE DOCUMENTOS E COFRE (DEFINITIVO)
+         ============================================================== -->
+    <div id="modal-documentos" class="settings-drawer glass-panel" style="width: 480px; right: -550px; display: flex; flex-direction: column;">
+        <div class="drawer-header" style="padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="material-icons-round" style="color: var(--neon-blue); font-size: 22px;">folder_special</span>
+                <div>
+                    <h2 id="titulo-modal-docs" style="font-size: 16px; font-weight: 800; margin: 0;">Documentos</h2>
+                    <span style="font-size: 9px; color: var(--neon-green); font-weight: 800; letter-spacing: 0.8px;">GOVERNANÇA DOCUMENTAL B2B</span>
+                </div>
+            </div>
+            <button class="btn-close" onclick="fecharModais()" style="padding: 5px;"><span class="material-icons-round" style="font-size: 18px;">close</span></button>
+        </div>
+        
+        <div class="drawer-content" style="padding: 18px 20px; display: flex; flex-direction: column; flex: 1; min-height: 0; overflow-y: auto;">
+            
+            <div id="grid-pastas" style="display: flex; flex-direction: column; gap: 12px; flex: 1;">
+                
+                <!-- CARD 1: COMPLIANCE LEGAL (HORIZONTAL EMPILHADO) -->
+                <div class="folder-card glow-hover-yellow" style="background: linear-gradient(145deg, rgba(245, 158, 11, 0.10), rgba(0,0,0,0.55)); border-color: rgba(245, 158, 11, 0.32); flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; cursor: pointer;" onclick="abrirPastaDocs('compliance')">
+                    <div style="display: flex; align-items: center; gap: 14px; min-width: 0;">
+                        <div style="background: rgba(245, 158, 11, 0.16); border: 1px solid rgba(245, 158, 11, 0.3); padding: 10px; border-radius: 12px; display: flex; flex-shrink: 0;">
+                            <span class="material-icons-round folder-icon" style="color: var(--neon-yellow); margin: 0; font-size: 24px !important; text-shadow: 0 0 12px rgba(245, 158, 11, 0.4);">health_and_safety</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0;">
+                            <span class="folder-title" style="color: white; font-size: 13px; margin: 0;">Compliance Legal</span>
+                            <span class="folder-subtitle" style="margin: 0;">Alvarás, NR-20 e Vigilância Sanitária</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
+                        <span id="badge-count-compliance" style="font-size: 9px; font-weight: 900; background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); padding: 2px 8px; border-radius: 10px; white-space: nowrap;">PDFs</span>
+                        <span class="material-icons-round" style="color: var(--neon-yellow); font-size: 18px;">chevron_right</span>
+                    </div>
+                </div>
+
+                <!-- CARD 2: AUDITORIA PARCEIROS (HORIZONTAL EMPILHADO) -->
+                <div class="folder-card glow-hover" style="background: linear-gradient(145deg, rgba(16, 185, 129, 0.10), rgba(0,0,0,0.55)); border-color: rgba(16, 185, 129, 0.32); flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; cursor: pointer;" onclick="abrirPastaDocs('auditoria')">
+                    <div style="display: flex; align-items: center; gap: 14px; min-width: 0;">
+                        <div style="background: rgba(16, 185, 129, 0.16); border: 1px solid rgba(16, 185, 129, 0.3); padding: 10px; border-radius: 12px; display: flex; flex-shrink: 0;">
+                            <span class="material-icons-round folder-icon" style="color: var(--neon-green); margin: 0; font-size: 24px !important; text-shadow: 0 0 12px rgba(16, 185, 129, 0.4);">fact_check</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0;">
+                            <span class="folder-title" style="color: white; font-size: 13px; margin: 0;">Auditoria Parceiros</span>
+                            <span class="folder-subtitle" style="margin: 0;">Checklists Sodexo, SLA & POPs Operacionais</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
+                        <span id="badge-count-auditoria" style="font-size: 9px; font-weight: 900; background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 2px 8px; border-radius: 10px; white-space: nowrap;">PDFs</span>
+                        <span class="material-icons-round" style="color: var(--neon-green); font-size: 18px;">chevron_right</span>
+                    </div>
+                </div>
+
+                <!-- CARD 3: RELATÓRIOS OFICIAIS / COFRE (HORIZONTAL EMPILHADO) -->
+                <div class="folder-card glow-hover" style="background: linear-gradient(145deg, rgba(168, 85, 247, 0.12), rgba(0,0,0,0.6)); border-color: rgba(168, 85, 247, 0.35); flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; cursor: pointer;" onclick="abrirCofreAuditoria()">
+                    <div style="display: flex; align-items: center; gap: 14px; min-width: 0;">
+                        <div style="background: rgba(168, 85, 247, 0.18); border: 1px solid rgba(168, 85, 247, 0.32); padding: 10px; border-radius: 12px; display: flex; flex-shrink: 0;">
+                            <span class="material-icons-round folder-icon" style="color: var(--neon-purple); margin: 0; font-size: 24px !important;">inventory_2</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0;">
+                            <span class="folder-title" style="color: white; font-size: 13px; margin: 0;">Relatórios Oficiais (Cofre)</span>
+                            <span class="folder-subtitle" style="margin: 0;">Acesso imutável a faturas criptografadas</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
+                        <span id="badge-count-cofre" style="font-size: 9px; font-weight: 900; background: rgba(168, 85, 247, 0.18); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.4); padding: 2px 8px; border-radius: 10px; white-space: nowrap;">0 Seladas</span>
+                        <span class="material-icons-round" style="color: var(--neon-purple); font-size: 18px;">chevron_right</span>
+                    </div>
+                </div>
+
+                <!-- PAINEL DE TELEMETRIA DO CLUSTER (100% DINÂMICO) -->
+                <div style="background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(59, 130, 246, 0.18); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 9px; color: var(--text-muted); font-weight: 800; letter-spacing: 0.8px;">TELEMETRIA DO CLUSTER B2B</span>
+                        <span id="txt-telemetria-objetos" style="font-size: 8px; color: #38bdf8; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); padding: 2px 7px; border-radius: 6px; font-weight: 900;">SINCRONIZANDO...</span>
+                    </div>
+                    <div style="width: 100%; height: 4px; background: rgba(255, 255, 255, 0.06); border-radius: 4px; overflow: hidden;">
+                        <div id="barra-telemetria-docs" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-green)); border-radius: 4px; transition: width 0.5s ease;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 9px; color: #94a3b8; font-weight: 600;">
+                        <span>Normas: <strong style="color: #e2e8f0;">NR-20 • ISO 22000</strong></span>
+                        <span>Validação: <strong style="color: var(--neon-green);">CRC-32 / SHA-256</strong></span>
+                    </div>
+                </div>
+
+                <!-- FUNDO 100% MESCLADO SEM CAIXA E SEM DEMARCAÇÃO -->
+                <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; min-height: 110px; pointer-events: none; user-select: none; overflow: hidden; background: transparent; border: none;">
+                    <div style="position: absolute; width: 150px; height: 150px; background: radial-gradient(circle, rgba(59, 130, 246, 0.07) 0%, transparent 70%); border-radius: 50%;"></div>
+                    <span class="material-icons-round" style="font-size: 34px; color: rgba(59, 130, 246, 0.22); margin-bottom: 6px;">shield_lock</span>
+                    <span style="font-size: 8.5px; font-weight: 900; letter-spacing: 2.5px; color: rgba(226, 232, 240, 0.28);">ENCRYPTED DATA VAULT</span>
+                    <span style="font-size: 7.5px; font-family: monospace; color: rgba(56, 189, 248, 0.28); margin-top: 3px; letter-spacing: 1px;">AES-256 • SHA-256 HASHING • CLOUD CLUSTER</span>
+                </div>
+            </div>
+            
+            <div id="conteudo-pasta" style="display: none; flex-direction: column; flex: 1; min-height: 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-shrink: 0;">
+                    <button onclick="voltarPastas()" style="background: linear-gradient(90deg, rgba(59,130,246,0.15), transparent); border: 1px solid rgba(59,130,246,0.3); border-left: 3px solid var(--neon-blue); color: white; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 10px; padding: 6px 14px; font-weight: 800; border-radius: 6px;">
+                        <span class="material-icons-round" style="font-size: 15px; color: var(--neon-blue);">keyboard_backspace</span> VOLTAR
+                    </button>
+                    <div style="display: flex; align-items: center; gap: 6px; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); padding: 4px 10px; border-radius: 6px;">
+                        <span class="material-icons-round" style="font-size: 12px; color: var(--neon-green);">cloud_done</span>
+                        <span style="font-size: 8.5px; color: var(--neon-green); font-weight: 800; letter-spacing: 0.5px;">SINCRONIZADO</span>
+                    </div>
+                </div>
+
+                <div id="lista-arquivos-render" style="display: flex; flex-direction: column; gap: 10px; flex: 1; min-height: 0; overflow-y: auto; padding-right: 5px;"></div>
+                
+                <div style="position: relative; margin-top: 12px; flex-shrink: 0;">
+                    <button type="button" id="btn-visual-upload-doc" onclick="document.getElementById('input-upload-doc').click()" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(15, 23, 42, 0.75); border: 1px dashed rgba(59, 130, 246, 0.45); color: var(--neon-blue); padding: 12px; font-size: 11px; font-weight: 800; letter-spacing: 0.8px; border-radius: 10px; cursor: pointer; box-shadow: none; transition: 0.2s;" onmouseover="this.style.background='rgba(59, 130, 246, 0.12)'; this.style.borderColor='var(--neon-blue)';" onmouseout="this.style.background='rgba(15, 23, 42, 0.75)'; this.style.borderColor='rgba(59, 130, 246, 0.45)';">
+                        <span class="material-icons-round" style="font-size: 18px;">cloud_upload</span> ANEXAR DOCUMENTO PDF (ATÉ 5MB)
+                    </button>
+                    <input type="file" id="input-upload-doc" accept=".pdf" style="display: none;" onchange="processarUploadDocumento(event)">
+                </div>
+            </div>
+            </div>
+        
+        <div id="rodape-documentos" class="drawer-footer" style="padding: 15px 20px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.3); flex-shrink: 0;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                <span class="material-icons-round text-neon-blue" style="font-size: 16px;">verified_user</span>
+                <span style="font-size: 10px; font-weight: 800; letter-spacing: 1px; color: #e2e8f0;">DIRETRIZES DE ARMAZENAMENTO</span>
+            </div>
+            <p style="font-size: 10px; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                Arquivos indexados operam via pipeline criptográfico Base64 e proteção de cluster.
+            </p>
+        </div>
+    </div>
+
+    <!-- COFRE DE AUDITORIA (AGORA COM A MESMA LARGURA PADRÃO DE 480px) -->
+    <div id="modal-cofre" class="settings-drawer glass-panel" style="width: 480px; right: -550px; display: flex; flex-direction: column;">
+        <div class="drawer-header" style="padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="material-icons-round" style="color: var(--neon-purple);">verified_user</span>
+                <h2 style="font-size: 16px; font-weight: 800;">Cofre de Faturas Seladas</h2>
+            </div>
+            <button class="btn-close" onclick="fecharModais()"><span class="material-icons-round">close</span></button>
+        </div>
+        
+        <div class="drawer-content" style="padding: 20px; flex: 1; overflow-y: auto; display: flex; flex-direction: column;">
+            
+            <!-- BOTÃO VOLTAR PREMIUM NO COFRE -->
+            <button onclick="fecharModais(); abrirCentralDocumentos();" style="align-self: flex-start; background: linear-gradient(90deg, rgba(168,85,247,0.1), transparent); border: 1px solid rgba(168,85,247,0.2); border-left: 3px solid var(--neon-purple); color: white; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 10px; margin-bottom: 20px; padding: 6px 15px; font-weight: 800; border-radius: 6px; transition: 0.3s; text-shadow: 0 0 8px rgba(168,85,247,0.5);" onmouseover="this.style.background='linear-gradient(90deg, rgba(168,85,247,0.2), transparent)'; this.style.transform='translateX(-3px)';" onmouseout="this.style.background='linear-gradient(90deg, rgba(168,85,247,0.1), transparent)'; this.style.transform='translateX(0)';">
+                <span class="material-icons-round" style="font-size: 16px; color: var(--neon-purple);">keyboard_backspace</span> VOLTAR
+            </button>
+
+            <p class="micro-text" style="margin-bottom: 20px;">Registro imutável de faturas comerciais geradas com assinatura criptográfica (Hash).</p>
+            <div id="lista-historico-faturas" style="display: flex; flex-direction: column; gap: 12px;"></div>
+        </div>
+    </div>
+
+    <!-- ==============================================================
+         GESTÃO DE CONTRATOS B2B (MODAL WOW COMPLETO)
+         ============================================================== -->
+    <div id="modal-contratos" class="settings-drawer glass-panel" style="width: 450px; right: -500px; display: flex; flex-direction: column;">
+        <div class="drawer-header" style="padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <!-- SETINHA DE VOLTAR -->
+                <button id="btn-voltar-contrato" onclick="alternarTelaContrato('lista')" style="display: none; background: transparent; border: none; color: var(--neon-blue); cursor: pointer; padding: 0; align-items: center; justify-content: center;"><span class="material-icons-round" style="font-size: 20px;">arrow_back</span></button>
+                
+                <span class="material-icons-round" style="color: #f59e0b; font-size: 20px;">handshake</span>
+                <h2 style="font-size: 16px;">Gestão de Contratos</h2>
+            </div>
+            <button class="btn-close" onclick="fecharModais()" style="padding: 5px;"><span class="material-icons-round" style="font-size: 18px;">close</span></button>
+        </div>
+        
+        <!-- MODO 1: LISTA -->
+        <div id="view-lista-contratos" class="drawer-content" style="padding: 15px 20px; flex: 1; overflow-y: auto; display: flex; flex-direction: column;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 20px; flex-shrink: 0;">
+                <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.3); padding: 10px; border-radius: 8px; display: flex; flex-direction: column; align-items: center;">
+                    <span id="stat-ativos" style="font-size: 20px; font-weight: 800; color: var(--neon-green);">0</span>
+                    <span style="font-size: 8px; color: var(--text-muted); font-weight: 800; text-align: center;">ATIVOS</span>
+                </div>
+                <div style="background: rgba(234, 179, 8, 0.05); border: 1px solid rgba(234, 179, 8, 0.3); padding: 10px; border-radius: 8px; display: flex; flex-direction: column; align-items: center;">
+                    <span id="stat-alerta" style="font-size: 20px; font-weight: 800; color: var(--neon-yellow);">0</span>
+                    <span style="font-size: 8px; color: var(--text-muted); font-weight: 800; text-align: center;">VENCE EM 30 DIAS</span>
+                </div>
+                <div style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.3); padding: 10px; border-radius: 8px; display: flex; flex-direction: column; align-items: center;">
+                    <span id="stat-vencidos" style="font-size: 20px; font-weight: 800; color: var(--neon-red);">0</span>
+                    <span style="font-size: 8px; color: var(--text-muted); font-weight: 800; text-align: center;">VENCIDOS</span>
+                </div>
+            </div>
+
+            <label style="color: var(--text-muted); font-size: 10px; margin-bottom: 10px; display: block; font-weight: 700;">CONTRATOS COMERCIAIS CADASTRADOS</label>
+            <div id="lista-contratos-render" style="display: flex; flex-direction: column; gap: 10px; padding: 6px 6px 12px 6px; margin: -6px -6px 0 -6px;"></div>
+
+            <!-- FUNDO MESCLADO SUTIL (TRAVADO APÓS O LOADING) -->
+            <div id="watermark-contratos-lista" style="display: none; flex: 1; flex-direction: column; align-items: center; justify-content: center; position: relative; min-height: 115px; margin-top: auto; padding-top: 12px; pointer-events: none; user-select: none; overflow: hidden; border: none; background: transparent;">
+                <div style="position: absolute; width: 140px; height: 140px; background: radial-gradient(circle, rgba(245, 158, 11, 0.06) 0%, transparent 70%); border-radius: 50%;"></div>
+                <span class="material-icons-round" style="font-size: 32px; color: rgba(245, 158, 11, 0.24); margin-bottom: 6px;">gavel</span>
+                <span style="font-size: 8px; font-weight: 900; letter-spacing: 2px; color: rgba(226, 232, 240, 0.3);">B2B SLA & LEGAL GOVERNANCE</span>
+                <span style="font-size: 7px; font-family: monospace; color: rgba(251, 191, 36, 0.3); margin-top: 3px; letter-spacing: 1px;">ACTIVE MONITORING • AUTO-EXPIRATION ALERT</span>
+            </div>
+        </div>
+        
+        <div id="footer-lista-contratos" class="drawer-footer" style="padding: 14px 20px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.3); flex-shrink: 0; display: flex; flex-direction: column; gap: 10px;">
+            <button class="btn-premium" style="width: 100%; justify-content: center; background: rgba(234, 179, 8, 0.12); border: 1px dashed rgba(234, 179, 8, 0.55); color: var(--neon-yellow); padding: 11px; font-size: 11px; font-weight: 800; letter-spacing: 0.8px;" onclick="alternarTelaContrato('form')">
+                <span class="material-icons-round" style="font-size: 16px;">add_circle</span> REDIGIR NOVO ACORDO
+            </button>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 2px; font-size: 9px; color: var(--text-muted); font-weight: 700;">
+                <span style="display: flex; align-items: center; gap: 4px;"><span class="material-icons-round" style="font-size: 12px; color: var(--neon-green);">verified_user</span> Compliance Contratual B2B</span>
+                <span style="font-family: monospace; color: #94a3b8;">SLA 30d • Nuvem Ativa</span>
+            </div>
+        </div>
+
+        <!-- MODO 2: FORMULÁRIO -->
+        <div id="view-form-contrato" class="drawer-content" style="display: none; padding: 15px 20px; flex: 1; overflow-y: auto; flex-direction: column;">
+            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">Preencha a ficha para homologar ou atualizar um acordo comercial.</p>
+
+            <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 15px;">
+                <div id="logo-preview-box" onclick="document.getElementById('input-logo-empresa').click()" style="width: 72px; height: 72px; border-radius: 50%; border: 2px dashed rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; cursor: pointer; overflow: hidden; position: relative; transition: 0.25s;" class="glow-hover">
+                    <span id="logo-icon-placeholder" class="material-icons-round text-muted" style="font-size: 26px;">add_photo_alternate</span>
+                    <img id="logo-image-preview" src="" style="display: none; width: 100%; height: 100%; object-fit: contain; padding: 6px; box-sizing: border-box;">
+                </div>
+                <span id="lbl-status-logo-contrato" style="font-size: 8px; color: var(--text-muted); margin-top: 6px; font-weight: 800; letter-spacing: 0.8px;">CLIQUE PARA ADD LOGO</span>
+                <input type="file" id="input-logo-empresa" accept="image/*" style="display: none;" onchange="previewLogoEmpresa(event)">
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <input type="hidden" id="cad-empresa-id" value="">
+
+                <div>
+                    <label style="font-size: 10px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; display: block;">NOME DA EMPRESA</label>
+                    <input type="text" id="cad-empresa-nome" class="premium-input" placeholder="Ex: SOSERVI" style="padding: 10px; font-size: 12px;">
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label style="font-size: 10px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; display: block;">CNPJ (14 Dígitos)</label>
+                        <input type="text" id="cad-empresa-cnpj" class="premium-input" placeholder="00.000.000/0000-00" style="padding: 10px; font-size: 12px;" oninput="mascaraCNPJ(this)" maxlength="18">
+                    </div>
+                    <div>
+                        <label style="font-size: 10px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; display: block;">GESTOR RESPONSÁVEL</label>
+                        <input type="text" id="cad-empresa-gestor" class="premium-input" placeholder="Nome do Contato" style="padding: 10px; font-size: 12px;">
+                    </div>
+                </div>
+                
+                <!-- CUSTOM SELECT: TIPO DE PARCERIA -->
+                <div class="custom-select-wrapper" style="position: relative;">
+                    <label style="font-size: 10px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; display: block;">TIPO DE PARCERIA</label>
+                    <div id="tipo-parceria-display" class="premium-input glow-hover" style="padding: 10px; font-size: 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleDropdownParceria()">
+                        <span id="tipo-parceria-texto">Parceiros</span>
+                        <span class="material-icons-round text-neon-blue" style="font-size: 16px; pointer-events: none;">expand_more</span>
+                    </div>
+                    <div id="tipo-parceria-lista" class="dropdown-list" style="top: 100%; left: 0; width: 100%; border-radius: 8px; margin-top: 5px; z-index: 10;">
+                        <div class="dropdown-item" onclick="selecionarParceria('Parceiros')">Parceiros</div>
+                        <div class="dropdown-item" onclick="selecionarParceria('Terceirizada')">Terceirizada</div>
+                        <div class="dropdown-item" onclick="selecionarParceria('Locação / Serviços')">Locação / Serviços</div>
+                        <div class="dropdown-item" onclick="selecionarParceria('Visitantes VIP')">Visitantes VIP</div>
+                    </div>
+                    <input type="hidden" id="cad-empresa-tipo" value="Parceiros">
+                </div>
+
+                <!-- DATAS COM FLATPICKR -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label style="font-size: 10px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; display: block;">DATA DE INÍCIO</label>
+                        <input type="text" id="cad-empresa-inicio" class="premium-input flatpickr-input" placeholder="Selecione..." style="padding: 10px; font-size: 11px; cursor: pointer;">
+                    </div>
+                    <div id="box-vencimento">
+                        <label style="font-size: 10px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; display: block;">VENCIMENTO (FIM)</label>
+                        <input type="text" id="cad-empresa-fim" class="premium-input flatpickr-input" placeholder="Selecione..." style="padding: 10px; font-size: 11px; cursor: pointer;">
+                    </div>
+                    
+                    <!-- PAINEL PREMIUM DE ANEXO (PDF) -->
+                    <div style="margin-top: 10px; grid-column: 1 / -1; width: 100%; box-sizing: border-box; background: rgba(15, 23, 42, 0.4); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 22px 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; transition: 0.3s;" id="box-upload-pdf">
+                        <span class="material-icons-round" style="color: var(--neon-blue); font-size: 28px; margin-bottom: 8px;" id="icone-upload-pdf">picture_as_pdf</span>
+                        <h5 style="color: white; font-size: 13px; font-weight: 700; margin: 0 0 4px 0;" id="texto-upload-pdf">Anexar Contrato (Opcional)</h5>
+                        <p style="color: var(--text-muted); font-size: 10px; margin: 0;" id="subtexto-upload-pdf">Clique para buscar o arquivo .PDF</p>
+                        
+                        <!-- Input invisível que cobre toda a caixa -->
+                        <input type="file" id="cad-empresa-pdf" accept=".pdf" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;" onchange="converterPdfBase64(event)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- FUNDO MESCLADO SUTIL (AMBIENT WATERMARK - FORMULÁRIO) -->
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; min-height: 85px; margin-top: 12px; pointer-events: none; user-select: none; overflow: hidden; border-radius: 12px; background: radial-gradient(circle at center, rgba(16, 185, 129, 0.04) 0%, transparent 70%);">
+                <span class="material-icons-round" style="font-size: 26px; color: rgba(16, 185, 129, 0.18); margin-bottom: 4px;">verified</span>
+                <span style="font-size: 8px; font-weight: 900; letter-spacing: 2px; color: rgba(255, 255, 255, 0.18);">DIGITAL CONTRACT HOMOLOGATION</span>
+                <span style="font-size: 7px; font-family: monospace; color: rgba(148, 163, 184, 0.25); margin-top: 2px; letter-spacing: 1px;">MULTI-PDF BASE64 • NUVEM CLOUD</span>
+            </div>
+        </div>
+
+        <div id="footer-form-contrato" class="drawer-footer" style="display: none; padding: 15px 20px; border-top: 1px solid rgba(255,255,255,0.05); gap: 10px; flex-shrink: 0;">
+            <button class="btn-premium" style="flex: 1; justify-content: center; background: rgba(255,255,255,0.05); color: var(--text-muted); padding: 10px; font-size: 11px;" onclick="alternarTelaContrato('lista')">
+                CANCELAR
+            </button>
+            <!-- BOTÃO COM ID RESTAURADO -->
+            <button id="btn-acao-contrato" class="btn-premium" style="flex: 2; justify-content: center; background: linear-gradient(135deg, var(--neon-green), #059669); color: white; padding: 10px; font-size: 11px;" onclick="salvarNovoContrato()">
+                HOMOLOGAR <span class="material-icons-round" style="font-size: 16px;">verified</span>
+            </button>
+        </div>
+    </div>
+
+
+
+  <!-- CENTRAL DE OPERAÇÕES (IMPORTAÇÃO E GLOSAS - VERSÃO FINAL BLINDADA) -->
+    <div id="modal-operacoes" class="settings-drawer glass-panel" style="width: 390px; right: -430px;">
+        <div class="drawer-header" style="padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="material-icons-round" style="color: var(--neon-blue); font-size: 20px;">cloud_sync</span>
+                <h2 style="font-size: 16px;">Central de Dados</h2>
+            </div>
+            <button class="btn-close" onclick="fecharModais()" style="padding: 5px;"><span class="material-icons-round" style="font-size: 18px;">close</span></button>
+        </div>
+        
+        <div class="drawer-content" style="padding: 15px 20px;">
+            
+            <p class="micro-text" style="margin-bottom: 12px; font-size: 10px; line-height: 1.3;">Alimente o banco de dados com lotes offline da catraca em formato CSV e registre ajustes financeiros.</p>
+
+            <!-- 1. UPLOAD CSV (COMPONENTE MUTANTE VIP + GERADOR DE CSV DEMO) -->
+            <div id="card-upload-csv" style="background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 10px; padding: 12px 15px; margin-bottom: 12px; transition: 0.3s;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="material-icons-round text-neon-blue" style="font-size: 16px;">upload_file</span>
+                        <h3 style="color: white; font-size: 13px; font-weight: 700; margin: 0;">Lote Control iD (CSV)</h3>
+                    </div>
+                    <button type="button" onclick="baixarCSVExemploControlID()" class="smart-tag" data-valor="📥 Baixar lote de teste (30 acessos iFood + Ultragaz)" style="background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.45); color: #e9d5ff; padding: 4px 8px; border-radius: 6px; font-size: 9px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: 0.2s;" onmouseover="this.style.background='#a855f7'; this.style.color='white';" onmouseout="this.style.background='rgba(168, 85, 247, 0.15)'; this.style.color='#e9d5ff';">
+                        <span class="material-icons-round" style="font-size: 12px;">download</span> CSV DEMO (30 LINHAS)
+                    </button>
+                </div>
+                <p id="subtexto-guia-csv" style="font-size: 10px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.3;">Sanitização de duplicidades ativa. <span style="color: #93c5fd;">Para testar um novo upload, selecione <strong>Junho 2025</strong> no topo e use o CSV Demo.</span></p>
+
+                <!-- INPUT INVISÍVEL -->
+                <input type="file" id="arquivo-csv" accept=".csv" style="display: none;" onchange="atualizarInterfaceUploadCSV()">
+                
+                <!-- ZONA DO ARQUIVO VISUAL -->
+                <div id="box-visual-csv" style="background: rgba(0,0,0,0.4); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; transition: 0.3s;">
+
+                    <!-- ÁREA CLICÁVEL -->
+                    <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; cursor: pointer;" onclick="document.getElementById('arquivo-csv').click()" id="area-clique-csv">
+                        <div id="icone-box-csv" style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 6px; display: flex; transition: 0.3s; flex-shrink: 0;">
+                            <span id="icone-tipo-csv" class="material-icons-round" style="font-size: 20px; color: var(--text-muted);">attach_file</span>
+                        </div>
+                        <div style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+                            <span id="nome-arquivo-csv" style="font-size: 11px; color: var(--text-muted); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Selecionar arquivo CSV...</span>
+                            <span id="status-arquivo-csv" style="font-size: 9px; color: rgba(255,255,255,0.3);">Nenhum lote carregado</span>
+                        </div>
+                    </div>
+
+                    <!-- LIXEIRA DE DUPLA FUNÇÃO (Apaga seleção ou Faz Rollback) -->
+                    <button id="btn-lixeira-csv" onclick="acaoLixeiraCSV()" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; border-radius: 6px; padding: 6px; cursor: pointer; transition: 0.2s; margin-left: 8px; flex-shrink: 0;" onmouseover="this.style.background='#ef4444'; this.style.color='white';" onmouseout="this.style.background='rgba(239, 68, 68, 0.15)'; this.style.color='#ef4444';">
+                        <span class="material-icons-round" style="font-size: 16px;">delete_forever</span>
+                    </button>
+
+                </div>
+                
+                <!-- BOTÃO IMPORTAR MUTANTE -->
+                <button id="btn-importar-csv" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px; font-size: 11px; font-weight: 800; cursor: not-allowed; transition: all 0.3s ease; pointer-events: none;" onclick="processarCSV()">
+                    IMPORTAR DADOS <span class="material-icons-round" style="font-size: 14px;">bolt</span>
+                </button>
+            </div>
+            
+            <!-- 2. TICKETS MANUAIS (COM MEMÓRIA DE CÁLCULO DINÂMICA) -->
+            <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 12px 15px; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="material-icons-round text-neon-green" style="font-size: 16px;">receipt_long</span>
+                        <h3 style="color: white; font-size: 13px; font-weight: 700; margin: 0;">Lançar Tickets Avulsos</h3>
+                    </div>
+                    <span style="font-size: 8px; background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); padding: 2px 6px; border-radius: 4px; font-weight: 900; letter-spacing: 0.5px;">TARIFA PARCEIROS</span>
+                </div>
+                <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.2;">Para motoristas ou visitantes sem crachá biométrico. Sincronizado com o Motor de Precificação.</p>
+                
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <input type="number" id="qtd-tickets" placeholder="1" min="1" max="500" oninput="atualizarPreviewTicket(this)" style="width: 52px; flex-shrink: 0; height: 36px; text-align: center; padding: 6px; font-size: 13px; font-weight: 800; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.12); color: white; border-radius: 8px; outline: none; box-sizing: border-box;">
+                    
+                    <div class="custom-dropdown" id="ticket-turno-dropdown" style="flex: 1; min-width: 105px; height: 36px; position: relative;">
+                        <div class="dropdown-header glow-hover" onclick="event.stopPropagation(); document.getElementById('ticket-turno-lista').classList.toggle('active');" style="height: 100%; padding: 0 10px; background: rgba(0,0,0,0.5); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 8px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box;">
+                            <span id="ticket-turno-texto" style="font-size: 11px; font-weight: 700; color: white; white-space: nowrap;">☀️ Desjejum</span>
+                            <span class="material-icons-round notranslate" translate="no" style="font-size: 15px; color: var(--neon-green);">expand_more</span>
+                        </div>
+                        <div class="dropdown-list" id="ticket-turno-lista" style="top: calc(100% + 4px); left: 0; width: 100%; border: 1px solid var(--neon-green); z-index: 999999;">
+                            <div class="dropdown-item" onclick="selecionarTurnoTicket('Desjejum', '☀️ Desjejum')">☀️ Desjejum</div>
+                            <div class="dropdown-item" onclick="selecionarTurnoTicket('Almoço', '🍲 Almoço')">🍲 Almoço</div>
+                            <div class="dropdown-item" onclick="selecionarTurnoTicket('Lanche', '🥪 Lanche')">🥪 Lanche</div>
+                            <div class="dropdown-item" onclick="selecionarTurnoTicket('Jantar', '🌙 Jantar')">🌙 Jantar</div>
+                        </div>
+                        <input type="hidden" id="turno-tickets" value="Desjejum">
+                    </div>
+
+                    <button id="btn-lancar-ticket" style="min-width: 105px; flex-shrink: 0; height: 36px; padding: 0 14px; display: flex; justify-content: center; align-items: center; gap: 5px; background: rgba(16, 185, 129, 0.15); border: 1px dashed rgba(16, 185, 129, 0.6); color: var(--neon-green); border-radius: 8px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s ease; white-space: nowrap;" onclick="adicionarTicket()" onmouseover="this.style.filter='brightness(1.3)'; this.style.background='rgba(16, 185, 129, 0.25)';" onmouseout="this.style.filter='brightness(1)'; this.style.background='rgba(16, 185, 129, 0.15)';">
+                        LANÇAR <span class="material-icons-round notranslate" translate="no" style="font-size: 14px;">check_circle</span>
+                    </button>
+                </div>
+
+                <!-- JANELINHA DISCRIMINATIVA DE CÁLCULO EM TEMPO REAL -->
+                <div id="resumo-calculo-ticket" style="margin-top: 8px; padding: 6px 10px; background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; color: #94a3b8; font-family: monospace;">
+                    <span id="calc-ticket-formula">1x Desjejum (Parceiros: R$ 7,00)</span>
+                    <strong id="calc-ticket-total" style="color: #10b981; font-size: 10.5px;">= R$ 7,00</strong>
+                </div>
+            </div>
+
+            <!-- 3. GLOSAS E ADICIONAIS (COM VALIDAÇÃO VISUAL ANTI-TDAH INLINE) -->
+            <div id="card-ajuste-financeiro" style="background: linear-gradient(145deg, rgba(245, 158, 11, 0.05), rgba(0,0,0,0.4)); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 12px; padding: 16px; box-shadow: inset 0 0 20px rgba(245, 158, 11, 0.05); transition: 0.3s;">
+                
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid rgba(245, 158, 11, 0.1); padding-bottom: 10px;">
+                    <div style="background: rgba(245, 158, 11, 0.1); padding: 6px; border-radius: 8px; display: flex;">
+                        <span class="material-icons-round" style="color: var(--neon-yellow); font-size: 18px;">price_change</span>
+                    </div>
+                    <div>
+                        <h3 style="color: white; font-size: 13px; font-weight: 800; margin: 0; letter-spacing: 0.5px;">Ajuste Financeiro</h3>
+                        <span style="font-size: 9px; color: var(--text-muted); font-weight: 600;">Lance extras ou glosas contratuais.</span>
+                    </div>
+                </div>
+
+                <div class="custom-dropdown" id="ajuste-empresa-dropdown" style="position: relative; margin-bottom: 8px;">
+                    <div id="box-input-empresa" class="dropdown-header glow-hover" onclick="event.stopPropagation(); document.getElementById('ajuste-empresa-lista').classList.toggle('active');" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 8px; padding: 7px 10px; display: flex; align-items: center; justify-content: flex-start; gap: 8px; cursor: pointer; box-sizing: border-box; transition: all 0.25s;">
+                        <span style="font-size: 7.5px; color: var(--neon-yellow); font-weight: 800; letter-spacing: 0.8px; flex-shrink: 0;">ENTIDADE ALVO:</span>
+                        <div style="display: flex; align-items: center; gap: 6px; min-width: 0; flex: 1;">
+                            <span id="ajuste-empresa-icone" class="material-icons-round notranslate" translate="no" style="font-size: 14px; color: #38bdf8; flex-shrink: 0;">touch_app</span>
+                            <span id="ajuste-empresa-texto" style="font-size: 10.5px; font-weight: 800; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Selecione a empresa...</span>
+                            <span class="material-icons-round notranslate" translate="no" style="font-size: 15px; color: var(--neon-yellow); margin-left: auto; flex-shrink: 0;">expand_more</span>
+                        </div>
+                    </div>
+                    <div class="dropdown-list" id="ajuste-empresa-lista" style="top: calc(100% + 4px); left: 0; width: 100%; max-height: 210px; overflow-y: auto; border: 1px solid rgba(245, 158, 11, 0.5); background: rgba(10, 15, 25, 0.98); backdrop-filter: blur(12px); z-index: 999999; border-radius: 8px; box-shadow: 0 12px 30px rgba(0,0,0,0.9);">
+                        <div class="dropdown-item" onclick="selecionarEmpresaAjuste('ULTRAGAZ', 'ULTRAGAZ', 'local_fire_department', '#3b82f6')" style="display: flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; padding: 8px 12px;">
+                            <span class="material-icons-round notranslate" style="font-size: 14px; color: #3b82f6;">local_fire_department</span> ULTRAGAZ
+                        </div>
+                        <div class="dropdown-item" onclick="selecionarEmpresaAjuste('SOSERVI', 'SOSERVI', 'cleaning_services', '#10b981')" style="display: flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; padding: 8px 12px;">
+                            <span class="material-icons-round notranslate" style="font-size: 14px; color: #10b981;">cleaning_services</span> SOSERVI
+                        </div>
+                        <div class="dropdown-item" onclick="selecionarEmpresaAjuste('SODEXO', 'SODEXO', 'restaurant', '#ec4899')" style="display: flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; padding: 8px 12px;">
+                            <span class="material-icons-round notranslate" style="font-size: 14px; color: #ec4899;">restaurant</span> SODEXO
+                        </div>
+                        <div class="dropdown-item" onclick="selecionarEmpresaAjuste('ARMAC', 'ARMAC', 'engineering', '#f59e0b')" style="display: flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; padding: 8px 12px;">
+                            <span class="material-icons-round notranslate" style="font-size: 14px; color: #f59e0b;">engineering</span> ARMAC
+                        </div>
+                        <div class="dropdown-item" onclick="selecionarEmpresaAjuste('JC MONTAGEM', 'JC MONTAGEM', 'handyman', '#94a3b8')" style="display: flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; padding: 8px 12px;">
+                            <span class="material-icons-round notranslate" style="font-size: 14px; color: #94a3b8;">handyman</span> JC MONTAGEM
+                        </div>
+                        <div class="dropdown-item" onclick="selecionarEmpresaAjuste('BC TRANSPORTES', 'BC TRANSPORTES', 'local_shipping', '#8b5cf6')" style="display: flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; padding: 8px 12px;">
+                            <span class="material-icons-round notranslate" style="font-size: 14px; color: #8b5cf6;">local_shipping</span> BC TRANSPORTES
+                        </div>
+                        <div class="dropdown-item" onclick="selecionarEmpresaAjuste('AVI SEGURANÇA', 'AVI SEGURANÇA', 'gpp_good', '#ef4444')" style="display: flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; padding: 8px 12px;">
+                            <span class="material-icons-round notranslate" style="font-size: 14px; color: #ef4444;">gpp_good</span> AVI SEGURANÇA
+                        </div>
+                        <div class="dropdown-item" onclick="selecionarEmpresaAjuste('SEGURPRO', 'SEGURPRO', 'security', '#eab308')" style="display: flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; padding: 8px 12px;">
+                            <span class="material-icons-round notranslate" style="font-size: 14px; color: #eab308;">security</span> SEGURPRO
+                        </div>
+                        <div class="dropdown-item" onclick="selecionarEmpresaAjuste('TOP SERVICE', 'TOP SERVICE', 'apartment', '#0ea5e9')" style="display: flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; padding: 8px 12px;">
+                            <span class="material-icons-round notranslate" style="font-size: 14px; color: #0ea5e9;">apartment</span> TOP SERVICE
+                        </div>
+                        <div class="dropdown-item" onclick="selecionarEmpresaAjuste('PREDIAL', 'PREDIAL', 'construction', '#f97316')" style="display: flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; padding: 8px 12px;">
+                            <span class="material-icons-round notranslate" style="font-size: 14px; color: #f97316;">construction</span> PREDIAL
+                        </div>
+                    </div>
+                    <input type="hidden" id="add-empresa" value="">
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1.25fr 1.05fr 1.15fr; gap: 8px; margin-bottom: 10px;">
+                    
+                    <div id="box-input-desc" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 6px 9px; transition: all 0.25s; display: flex; flex-direction: column; justify-content: center;">
+                        <label style="font-size: 7px; color: var(--neon-yellow); font-weight: 800; letter-spacing: 1px; display: block; margin-bottom: 2px;">DESCRIÇÃO *</label>
+                        <input type="text" id="add-desc" maxlength="28" placeholder="Ex: Coffee Break" autocomplete="off" oninput="limparErroInput('box-input-desc')" style="background: transparent; border: none; color: white; outline: none; font-size: 11px; width: 100%; font-family: 'Inter', sans-serif;">
+                    </div>
+
+                    <div id="box-input-mes" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 6px 6px; transition: all 0.25s; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <label style="font-size: 7px; color: var(--neon-yellow); font-weight: 800; letter-spacing: 0.6px; margin-bottom: 2px; white-space: nowrap;">DATA EVENTO *</label>
+                        <input type="text" id="add-mes" value="15/07/2025" placeholder="DD/MM/AAAA" maxlength="10" oninput="mascaraMesAno(this); limparErroInput('box-input-mes')" autocomplete="off" style="background: transparent; border: none; color: white; outline: none; font-size: 10.5px; width: 100%; text-align: center; font-family: 'Courier New', monospace; font-weight: bold; letter-spacing: 0.3px;">
+                    </div>
+                    
+                    <div id="box-input-valor" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 6px 9px; transition: all 0.25s; display: flex; flex-direction: column; justify-content: center;">
+                        <label style="font-size: 7px; color: var(--neon-yellow); font-weight: 800; letter-spacing: 1px; display: block; margin-bottom: 2px; white-space: nowrap;">VALOR (R$) *</label>
+                        <div style="display: flex; align-items: center; gap: 4px;">
+                            <span style="font-size: 10px; color: var(--text-muted); font-weight: 800; flex-shrink: 0;">R$</span>
+                            <input type="text" inputmode="numeric" id="add-valor" placeholder="0,00" maxlength="9" oninput="mascaraMoedaBRL(this); limparErroInput('box-input-valor')" style="background: transparent; border: none; color: white; outline: none; font-size: 11px; width: 100%; text-align: left; font-family: 'Inter', sans-serif; font-weight: bold;">
+                        </div>
+                    </div>
+                 </div>
+
+                <!-- JANELINHA DE AVISO INLINE (ANTI-TDAH: APARECE BEM NO OLHO DO USUÁRIO) -->
+                <div id="alerta-inline-ajuste" style="display: none; align-items: center; gap: 8px; background: rgba(239, 68, 68, 0.16); border: 1px solid #ef4444; border-left: 4px solid #ef4444; color: #fecaca; padding: 8px 10px; border-radius: 8px; font-size: 10px; font-weight: 700; margin-bottom: 10px; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.25);">
+                    <span class="material-icons-round" style="color: #ef4444; font-size: 16px;">error_outline</span>
+                    <span id="texto-alerta-inline" style="line-height: 1.3;">Preencha os campos obrigatórios destacados em vermelho!</span>
+                </div>
+
+                <!-- Botões Gêmeos -->
+                <div style="display: flex; gap: 8px;">
+                    <button style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: var(--neon-green); border-radius: 8px; padding: 8px; cursor: pointer; font-size: 10px; font-weight: 800; letter-spacing: 1px; transition: all 0.2s ease;" onclick="lancarAdicional('extra')" onmouseover="this.style.filter='brightness(1.3)'; this.style.background='rgba(16, 185, 129, 0.25)';" onmouseout="this.style.filter='brightness(1)'; this.style.background='rgba(16, 185, 129, 0.15)';">
+                        <span class="material-icons-round" style="font-size: 14px;">add_circle</span> EXTRA
+                    </button>
+                    
+                    <button style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; border-radius: 8px; padding: 8px; cursor: pointer; font-size: 10px; font-weight: 800; letter-spacing: 1px; transition: all 0.2s ease;" onclick="lancarAdicional('glosa')" onmouseover="this.style.filter='brightness(1.3)'; this.style.background='rgba(239, 68, 68, 0.25)';" onmouseout="this.style.filter='brightness(1)'; this.style.background='rgba(239, 68, 68, 0.15)';">
+                        <span class="material-icons-round" style="font-size: 14px;">remove_circle</span> GLOSA
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- AMBIENT WATERMARK & RODAPÉ DE ENTRADA DE DADOS -->
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; min-height: 95px; margin-top: 70px; pointer-events: none; user-select: none; overflow: hidden; border-radius: 12px; background: radial-gradient(circle at center, rgba(59, 130, 246, 0.04) 0%, transparent 70%);">
+                <span class="material-icons-round" style="font-size: 24px; color: rgba(59, 130, 246, 0.18); margin-bottom: 3px;">cloud_sync</span>
+                <span style="font-size: 8px; font-weight: 900; letter-spacing: 2px; color: rgba(255, 255, 255, 0.2);">IDEMPOTENCY & SANITIZATION PIPELINE</span>
+                <span style="font-size: 7px; font-family: monospace; color: rgba(56, 189, 248, 0.25); margin-top: 2px; letter-spacing: 1px;">CONTROL iD • AUTO-DUPLICATE BLOCKER</span>
+            </div>
+        </div>
+        <div class="drawer-footer" style="padding: 14px 20px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.3); flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="material-icons-round text-neon-blue" style="font-size: 16px;">verified_user</span>
+                <span style="font-size: 10px; font-weight: 800; letter-spacing: 1px; color: #e2e8f0;">FIREWALL DE DADOS ATIVO</span>
+            </div>
+            <span style="font-size: 9px; font-family: monospace; color: #94a3b8; font-weight: 700;">DATABASE CLOUD</span>
+        </div>
+        </div>
+
+
+    <!-- MÁSCARA ESCURA PARA FECHAR AO CLICAR FORA -->
+    <div id="overlay-config" class="overlay-hidden" onclick="fecharModais()"></div>
+    
+    <!-- CONTAINER DOS AVISOS (TOASTS) -->
+    <div id="toast-container" style="position: fixed; top: 30px; right: 30px; z-index: 999999; display: flex; flex-direction: column; gap: 15px; pointer-events: none;"></div>
+
+    <!-- ==============================================================
+         MODAL DE ALERTA PREMIUM (Substitui o confirm nativo feio)
+         ============================================================== -->
+    <div id="modal-confirmacao" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 9999999; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.2s;">
+        <div style="background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 16px; padding: 30px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.8); transform: scale(0.9); transition: transform 0.2s;" id="modal-confirmacao-box">
+            
+            <div style="background: rgba(239, 68, 68, 0.1); width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px auto; border: 2px solid rgba(239, 68, 68, 0.5); animation: pulse 1.5s infinite;">
+                <span class="material-icons-round" style="color: #ef4444; font-size: 32px;">warning</span>
+            </div>
+            
+            <h2 style="color: white; font-size: 18px; margin: 0 0 10px 0; font-weight: 800; letter-spacing: 0.5px;">ALERTA DE SEGURANÇA</h2>
+            <p id="texto-confirmacao" style="color: var(--text-muted); font-size: 13px; line-height: 1.5; margin: 0 0 25px 0;">Deseja realmente excluir este item?</p>
+            
+            <div style="display: flex; gap: 15px;">
+                <button class="btn-premium" style="flex: 1; justify-content: center; background: rgba(255,255,255,0.05); color: var(--text-muted); padding: 12px; font-size: 12px; border: 1px solid rgba(255,255,255,0.1);" onclick="fecharAlertaPremium()">
+                    CANCELAR
+                </button>
+                <!-- O ID 'btn-confirmar-acao' será interceptado pelo JavaScript -->
+                <button id="btn-confirmar-acao" class="btn-premium" style="flex: 1; justify-content: center; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; padding: 12px; font-size: 12px; font-weight: 800;">
+                    EXCLUIR DADOS
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
