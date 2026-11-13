@@ -38,6 +38,7 @@ A escolha arquitetural por Ingestão de Arquivo em vez de Webhooks em tempo real
 
 ## 🛠️ Como Testar (Deploy)
 Acesse a aplicação rodando ao vivo, sem precisar instalar nada:
+
 [![Live Demo](https://img.shields.io/badge/🚀_ACESSAR_SISTEMA_AO_VIVO-Sandbox_1--Click_iFood-EA1D2C?style=for-the-badge)](https://github.com/gestaointeligente-ia/refeitorio.git)
 
 *Para avaliar o projeto:*
