@@ -41,10 +41,16 @@ Acesse a aplicação rodando ao vivo, sem precisar instalar nada:
 
 [![Live Demo](https://img.shields.io/badge/🚀_ACESSAR_SISTEMA_AO_VIVO-Sandbox_1--Click_iFood-EA1D2C?style=for-the-badge)](https://github.com/gestaointeligente-ia/refeitorio.git)
 
-*Para avaliar o projeto:*
+*Para avaliar o projeto, o sistema conta com um Fast-Track VIP na tela de login:* 
 1. Acesse o link acima.
-2. Clique no botão vermelho **"Sandbox Avaliador iFood"** na tela inicial (não exige senha).
-3. Navegue pelo Dashboard, explore o modo *Spotlight* no gráfico e teste as exportações em PDF/Excel.
+2. Clique no botão vermelho **"Avaliador iFood GenAI"** na tela inicial (não exige senha).
+3. **Roteiro de Ingestão e Rollback (Mês de Teste — Junho/2025):**
+   - No topo direito do Dashboard, alterne o seletor de mês de `Julho 2025` para **`Junho 2025`**.
+   - Abra o menu lateral **Entrada de Dados** e clique em **`CSV DEMO (30 LINHAS)`** para baixar um lote real de Candeias-BA.
+   - Anexe o arquivo baixado e clique em **`IMPORTAR DADOS`**: veja o Firewall reter **2 batidas duplicadas (R$ 14,00 de Glosa Evitada)** e consolidar as **28 refeições válidas** instantaneamente.
+   - Quer testar a reversão? Volte em **Entrada de Dados** e clique no ícone da **Lixeira Vermelha** para executar o **Rollback em 1 clique**.
+3. **Modo Spotlight (`📈 VER RAMPA`):** Na coluna direita (*Faturamento Detalhado*), clique em **`📈 VER RAMPA`** em qualquer empresa para isolar sua curva horária, recalcular o gargalo por minuto (`p/min`), filtrar seus adicionais/glosas e visualizar o Total Líquido exclusivo daquela entidade.
+4. **Exportação Tripla Auditada:** Acesse a **Central de Relatórios** para emitir o **Boletim Executivo em PDF** (com selo criptográfico SHA-256 salvo no Cofre), o **Pacote `.ZIP` de Faturas Individuais**, a **Planilha Executiva `.XLSX` (3 Abas estilizadas)** ou o **Laudo Nominal de Duplicidades (PDF)**.
 
 ## 👨‍💻 Autor
 
