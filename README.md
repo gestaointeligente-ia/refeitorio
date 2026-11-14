@@ -1,7 +1,7 @@
 # 🍽️ Refeitório Inteligente B2B | Auditoria e Fluxo de Refeições
 
 ![Status](https://img.shields.io/badge/Status-Concluído_|_Pronto_para_Auditoria-success)
-![Stack](https://img.shields.io/badge/Stack-HTML5_|_CSS3_|_JavaScript_ES6+-f3df49)
+![Stack](https://img.shields.io/badge/Stack-HTML5_|_CSS3_|_JS_ES6+_|_Supabase-f3df49)
 ![Foco](https://img.shields.io/badge/Foco-Product_Management_|_AI_Builder-ff69b4)
 
 > **Um projeto desenvolvido por Ricardo Lima. De uma dor real em Mataripe-BA para um SaaS B2B Full-Cloud de nível Enterprise.**
@@ -34,12 +34,17 @@ A escolha arquitetural por Ingestão de Arquivo em vez de Webhooks em tempo real
 | **🛡️ Firewall de Idempotência (Control iD)** | Filtra batidas repetidas do mesmo colaborador no mesmo turno e diagnostica o delta: $\Delta \le 60\text{s}$ = **Reflexo de Catraca** vs. $\Delta > 60\text{s}$ = **Alerta de Repasse de Crachá**. | Elimina 100% das cobranças em duplicidade e quantifica a **Glosa Evitada (R$)** no PDF. |
 | **⚙️ Motor de Precificação 4XL & Tolerância SLA** | Configuração em nuvem de tarifas (*Ultragaz* vs. *Parceiros*, *Dias Normais* vs. *Aniversariantes*), Data Festiva automática (último dia útil) e botões de tolerância (`0 min`, `-15 min`, `+15 min`). | **Tarifação Proporcional por Proximidade:** Acessos fora de janela geram alerta de *Atípico*, mas são cobrados pelo turno contratual mais próximo. |
 | **📈 Modo Spotlight & Forecast AI** | Gráfico de calor analítico que identifica os horários de maior gargalo na fila, minuto a minuto, com recomendação de escalonamento de rampa. Isola visualmente a curva de tráfego, os KPIs de topo e o parecer da IA para uma única empresa parceira com 1 clique. | Previsibilidade de caixa para o gestor e redução de filas físicas no refeitório. |
-| **📑 Exportação Tripla & Cofre SHA-256** | Geração de Boletim PDF com paginação dinâmica anti-corte, Lote `.ZIP` individual por empresa, Excel `.XLSX` com 3 abas executivas e Cofre de Faturas com hash SHA-256,  | Rastreabilidade jurídica e contábil ponta a ponta entre Sodexo, Ultragaz e terceirizadas. |
+| **📑 Exportação Quádrupla & Cofre SHA-256** | Geração de Boletim PDF com paginação dinâmica anti-corte, Lote `.ZIP` individual por empresa, Excel `.XLSX` com 4 abas executivas, Laudo PDF Anti-Fraude e Cofre de Faturas com hash SHA-256. | Rastreabilidade jurídica e contábil ponta a ponta entre Sodexo, Ultragaz e terceirizadas. |
 | **🤝 Gestão de Contratos B2B & Documentos** | Controle de vigência contratual (*Ativos*, *Vence em 30d*, *Vencidos*), preview nativo de múltiplos PDFs em Base64 e repositório de *Compliance Legal (NR-20 / ISO 22000)*. | Centralização de governança legal e operacional em uma única interface. |
 
 Além disso, contamos com:
 - **Zero Descarte Financeiro:** Acessos fora da janela de SLA recebem flag de auditoria (`⚠️ Fora do Horário`), mas são tarifados proporcionalmente pela faixa horária correspondente (Manhã/Desjejum, Almoço, Tarde/Lanche, Noite/Jantar) de acordo com o contrato da empresa e o calendário do dia (Normal vs. Evento).
 - **Cálculo de Ticket Médio Ponderado:** Simulador instantâneo baseado na matriz operacional de $22\text{ dias úteis}$ ($21\text{d Normais} + 1\text{d Evento}$) com pesos de $50\%$ Almoço, $25\%$ Desjejum, $15\%$ Lanche e $10\%$ Jantar.
+
+## 🏗️ Decisões de Arquitetura (ADRs)
+- **ADR-01 (Sandbox Fast-Track):** Autenticação 1-Click Client-Side sobre **Supabase Cloud** com sanitização *Zero-Password Storage* para inspeção imediata da banca sem fricção de cadastro.
+- **ADR-02 (Zero-Hallucination Financial AI Engine):** Motor de *Forecast*, *Run-Rate (22d)* e detecção de gargalos baseado em heurística determinística de baixa latência (120 FPS), garantindo **0% de alucinação matemática** no fechamento contábil e proteção total contra exposição de API Keys no navegador.
+- **ADR-03 (Append-Only Financial Ledger):** Livro-razão imutável para Adicionais e Glosas com estorno por contra-partida contábil e selagem criptográfica **SHA-256**.
 
 ## 🛠️ Como Testar (Deploy)
 Acesse a aplicação rodando ao vivo, sem precisar instalar nada:
@@ -54,8 +59,8 @@ Acesse a aplicação rodando ao vivo, sem precisar instalar nada:
    - Abra o menu lateral **Entrada de Dados** e clique em **`CSV DEMO (30 LINHAS)`** para baixar um lote real de Candeias-BA.
    - Anexe o arquivo baixado e clique em **`IMPORTAR DADOS`**: veja o Firewall reter **2 batidas duplicadas (R$ 14,00 de Glosa Evitada)** e consolidar as **28 refeições válidas** instantaneamente.
    - Quer testar a reversão? Volte em **Entrada de Dados** e clique no ícone da **Lixeira Vermelha** para executar o **Rollback em 1 clique**.
-3. **Modo Spotlight (`📈 VER RAMPA`):** Na coluna direita (*Faturamento Detalhado*), clique em **`📈 VER RAMPA`** em qualquer empresa para isolar sua curva horária, recalcular o gargalo por minuto (`p/min`), filtrar seus adicionais/glosas e visualizar o Total Líquido exclusivo daquela entidade.
-4. **Exportação Tripla Auditada:** Acesse a **Central de Relatórios** para emitir o **Boletim Executivo em PDF** (com selo criptográfico SHA-256 salvo no Cofre), o **Pacote `.ZIP` de Faturas Individuais**, a **Planilha Executiva `.XLSX` (3 Abas estilizadas)** ou o **Laudo Nominal de Duplicidades (PDF)**.
+4. **Modo Spotlight (`📈 VER RAMPA`):** Na coluna direita (*Faturamento Detalhado*), clique em **`📈 VER RAMPA`** em qualquer empresa para isolar sua curva horária, recalcular o gargalo por minuto (`p/min`), filtrar seus adicionais/glosas e visualizar o Total Líquido exclusivo daquela entidade.
+5. **Exportação Quádrupla Auditada:** Acesse a **Central de Relatórios** para emitir o **Boletim Executivo em PDF** (com selo criptográfico SHA-256 salvo no Cofre), o **Pacote `.ZIP` de Faturas Individuais**, a **Planilha Executiva `.XLSX` (4 Abas estilizadas, incluindo aba do Firewall)** ou o **Laudo Nominal de Duplicidades (PDF)**.
 
 ## 👨‍💻 Autor
 
